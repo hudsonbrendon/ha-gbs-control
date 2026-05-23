@@ -17,5 +17,25 @@
       "already_configured": "This device is already configured.",
       "cannot_connect": "Failed to connect to the device."
     }
+  },
+  "services": {
+    "send_command": {
+      "name": "Send command",
+      "description": "Send a raw single-character command to a GBS Control device.",
+      "fields": {
+        "device_id": {
+          "name": "Device",
+          "description": "The GBS Control device to send the command to."
+        },
+        "command": {
+          "name": "Command",
+          "description": "Single command character, e.g. 7 (scanlines) or f (peaking)."
+        },
+        "path": {
+          "name": "Endpoint",
+          "description": "uc = user/web command, sc = low-level serial command."
+        }
+      }
+    }
   }
 }

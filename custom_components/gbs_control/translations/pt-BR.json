@@ -17,5 +17,25 @@
       "already_configured": "Este dispositivo já está configurado.",
       "cannot_connect": "Falha ao conectar ao dispositivo."
     }
+  },
+  "services": {
+    "send_command": {
+      "name": "Enviar comando",
+      "description": "Envia um comando bruto de um caractere para um dispositivo GBS Control.",
+      "fields": {
+        "device_id": {
+          "name": "Dispositivo",
+          "description": "O dispositivo GBS Control para onde enviar o comando."
+        },
+        "command": {
+          "name": "Comando",
+          "description": "Caractere único do comando, ex.: 7 (scanlines) ou f (peaking)."
+        },
+        "path": {
+          "name": "Endpoint",
+          "description": "uc = comando de usuário/web, sc = comando serial de baixo nível."
+        }
+      }
+    }
   }
 }

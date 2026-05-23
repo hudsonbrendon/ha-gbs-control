@@ -1,0 +1,19 @@
+send_command:
+  fields:
+    device_id:
+      required: true
+      selector:
+        device:
+          integration: gbs_control
+    command:
+      required: true
+      example: "7"
+      selector:
+        text:
+    path:
+      default: uc
+      selector:
+        select:
+          options:
+            - "uc"
+            - "sc"
