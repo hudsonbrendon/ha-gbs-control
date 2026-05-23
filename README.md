@@ -1,4 +1,4 @@
-<img src="assets/brand/icon.png" width="96" align="right" alt="GBS Control logo">
+<img src="custom_components/gbs_control/brand/icon.png" width="96" align="right" alt="GBS Control logo">
 
 # GBS Control — Home Assistant integration
 
