@@ -1,7 +1,11 @@
+<img src="assets/brand/icon.png" width="96" align="right" alt="GBS Control logo">
+
 # GBS Control — Home Assistant integration
 
 [![HACS Custom](https://img.shields.io/badge/HACS-Custom-41BDF5.svg)](https://github.com/hacs/integration)
 [![Test](https://github.com/hudsonbrendon/ha-gbs-control/actions/workflows/test.yml/badge.svg)](https://github.com/hudsonbrendon/ha-gbs-control/actions/workflows/test.yml)
+[![Lint](https://github.com/hudsonbrendon/ha-gbs-control/actions/workflows/lint.yml/badge.svg)](https://github.com/hudsonbrendon/ha-gbs-control/actions/workflows/lint.yml)
+[![Validate](https://github.com/hudsonbrendon/ha-gbs-control/actions/workflows/validate.yml/badge.svg)](https://github.com/hudsonbrendon/ha-gbs-control/actions/workflows/validate.yml)
 
 Control and monitor a [GBS Control](https://github.com/ramapcsx2/gbs-control) video
 upscaler (GBS-8200 / GBS-8220 with the ESP firmware) from Home Assistant.
@@ -38,3 +42,8 @@ the requested state differs from the reported state.
 - The ESP8266 prefers a single WebSocket client; keep one HA instance connected.
 - The output-resolution select is write-mostly; its shown value reflects the last
   selection made from Home Assistant, not a device readback.
+
+## Credits
+
+- Firmware and logo: the [GBS Control project](https://github.com/ramapcsx2/gbs-control) by ramapcsx2.
+- This is an unofficial, community-maintained Home Assistant integration.
