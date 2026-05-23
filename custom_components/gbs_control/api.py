@@ -100,10 +100,10 @@ class GBSControlApiClient:
         backoff = 1
         while not stop_event.is_set():
             try:
-                # timeout guards the handshake; heartbeat=30 is the idle-drop
-                # guard once connected (aiohttp pings and closes a dead socket).
+                # heartbeat=30 is the idle-drop guard once connected: aiohttp
+                # pings every 30s and closes the socket if no pong arrives.
                 async with self._session.ws_connect(
-                    self.ws_url, heartbeat=30, timeout=aiohttp.ClientTimeout(total=10)
+                    self.ws_url, heartbeat=30
                 ) as ws:
                     # Reset backoff on a successful connect; it only grows while
                     # the device is unreachable (connect attempts raise below).
