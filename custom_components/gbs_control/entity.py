@@ -13,6 +13,11 @@ class GBSControlEntity(CoordinatorEntity[GBSControlCoordinator]):
 
     _attr_has_entity_name = True
 
+    @property
+    def available(self) -> bool:
+        """Entities are only available while the device WebSocket is connected."""
+        return super().available and self.coordinator.connected
+
     def __init__(self, coordinator: GBSControlCoordinator, key: str) -> None:
         super().__init__(coordinator)
         self._key = key

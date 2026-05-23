@@ -1,7 +1,7 @@
 {
   "domain": "gbs_control",
   "name": "GBS Control",
-  "codeowners": [],
+  "codeowners": ["@hudsonbrendon"],
   "config_flow": true,
   "documentation": "https://github.com/hudsonbrendon/ha-gbs-control",
   "integration_type": "device",

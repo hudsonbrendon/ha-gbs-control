@@ -11,6 +11,7 @@ async def test_sensors_render_from_coordinator(hass):
     await hass.async_block_till_done()
 
     coordinator = hass.data[DOMAIN][entry.entry_id]
+    coordinator._handle_connection(True)  # simulate a connected device
     coordinator.async_set_updated_data({"preset": "8", "slot": 3})
     await hass.async_block_till_done()
 
@@ -20,3 +21,21 @@ async def test_sensors_render_from_coordinator(hass):
 
     slot = hass.states.get("sensor.gbs_control_active_slot")
     assert slot.state == "3"
+
+
+async def test_sensor_unavailable_until_connected(hass):
+    entry = MockConfigEntry(domain=DOMAIN, data={"host": "gbscontrol.local"}, unique_id="gbscontrol.local")
+    entry.add_to_hass(hass)
+    assert await hass.config_entries.async_setup(entry.entry_id)
+    await hass.async_block_till_done()
+
+    # No WebSocket connection yet -> entity reports unavailable, not stale data.
+    preset = hass.states.get("sensor.gbs_control_output_preset")
+    assert preset.state == "unavailable"
+
+    coordinator = hass.data[DOMAIN][entry.entry_id]
+    coordinator._handle_connection(True)
+    coordinator.async_set_updated_data({"preset": "1", "slot": 0})
+    await hass.async_block_till_done()
+    preset = hass.states.get("sensor.gbs_control_output_preset")
+    assert preset.state == "Preset 1"

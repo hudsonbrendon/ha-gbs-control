@@ -91,14 +91,18 @@ class GBSControlApiClient:
         self,
         on_frame: Callable[[bytes], None],
         stop_event: asyncio.Event,
+        on_connection: Callable[[bool], None] | None = None,
     ) -> None:
         """Connect the WebSocket and feed raw frame bytes to on_frame until stopped.
 
         Reconnects with backoff on drop (the ESP8266 disconnects clients when
-        its heap runs low). Returns only when stop_event is set.
+        its heap runs low). Returns only when stop_event is set. If given,
+        on_connection is called with True once connected and False when the
+        connection drops, so callers can track device availability.
         """
         backoff = 1
         while not stop_event.is_set():
+            connected = False
             try:
                 # heartbeat=30 is the idle-drop guard once connected: aiohttp
                 # pings every 30s and closes the socket if no pong arrives.
@@ -108,6 +112,9 @@ class GBSControlApiClient:
                     # Reset backoff on a successful connect; it only grows while
                     # the device is unreachable (connect attempts raise below).
                     backoff = 1
+                    connected = True
+                    if on_connection is not None:
+                        on_connection(True)
                     async for msg in ws:
                         if stop_event.is_set():
                             break
@@ -125,6 +132,9 @@ class GBSControlApiClient:
                             break
             except (aiohttp.ClientError, asyncio.TimeoutError) as err:
                 _LOGGER.debug("GBS Control WebSocket error: %s", err)
+            finally:
+                if connected and on_connection is not None:
+                    on_connection(False)
             if stop_event.is_set():
                 break
             await asyncio.sleep(backoff)

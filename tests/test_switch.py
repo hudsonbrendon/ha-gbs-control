@@ -22,6 +22,7 @@ async def test_scanlines_turn_on_sends_toggle_only_when_off(hass):
     await hass.async_block_till_done()
 
     coordinator = hass.data[DOMAIN][entry.entry_id]
+    coordinator._handle_connection(True)  # simulate a connected device
     coordinator.async_set_updated_data({"scanlines": False})
     await hass.async_block_till_done()
 
@@ -47,6 +48,7 @@ async def test_deinterlace_uses_distinct_on_off_commands(hass):
     await hass.async_block_till_done()
 
     coordinator = hass.data[DOMAIN][entry.entry_id]
+    coordinator._handle_connection(True)  # simulate a connected device
     coordinator.async_set_updated_data({"deinterlace": False})
     await hass.async_block_till_done()
     with patch.object(coordinator.api, "send_command", new=AsyncMock()) as send:
@@ -71,6 +73,7 @@ async def test_turn_off_noop_when_already_off(hass):
     await hass.async_block_till_done()
 
     coordinator = hass.data[DOMAIN][entry.entry_id]
+    coordinator._handle_connection(True)  # simulate a connected device
     coordinator.async_set_updated_data({"scanlines": False})
     await hass.async_block_till_done()
     with patch.object(coordinator.api, "send_command", new=AsyncMock()) as send:
@@ -90,6 +93,7 @@ async def test_no_command_when_state_unknown(hass):
     await hass.async_block_till_done()
 
     coordinator = hass.data[DOMAIN][entry.entry_id]
+    coordinator._handle_connection(True)  # simulate a connected device
     assert coordinator.data == {}  # no frame received yet
 
     with patch.object(coordinator.api, "send_command", new=AsyncMock()) as send:

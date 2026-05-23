@@ -18,3 +18,12 @@ async def test_handle_frame_ignores_log_noise(hass):
     coordinator._handle_frame(b"MCU: some log line")
     # unchanged — noise did not overwrite state
     assert coordinator.data == {"preset": "1"}
+
+
+async def test_connection_state_tracked(hass):
+    coordinator = GBSControlCoordinator(hass, "gbscontrol.local")
+    assert coordinator.connected is False
+    coordinator._handle_connection(True)
+    assert coordinator.connected is True
+    coordinator._handle_connection(False)
+    assert coordinator.connected is False

@@ -23,13 +23,19 @@ class GBSControlCoordinator(DataUpdateCoordinator[dict]):
         self.api = GBSControlApiClient(host, async_get_clientsession(hass))
         self._stop_event = asyncio.Event()
         self._listen_task: asyncio.Task | None = None
+        self._connected = False
         self.data = {}
+
+    @property
+    def connected(self) -> bool:
+        """Whether the WebSocket is currently connected to the device."""
+        return self._connected
 
     async def async_start(self) -> None:
         """Begin listening on the WebSocket."""
         self._stop_event.clear()
         self._listen_task = self.hass.async_create_background_task(
-            self.api.listen(self._handle_frame, self._stop_event),
+            self.api.listen(self._handle_frame, self._stop_event, self._handle_connection),
             name=f"{DOMAIN}_ws_{self.host}",
         )
 
@@ -47,6 +53,7 @@ class GBSControlCoordinator(DataUpdateCoordinator[dict]):
                 # (e.g. the DNS resolver). Log it, but never let it block unload.
                 _LOGGER.debug("Error stopping GBS Control listener: %s", err)
             self._listen_task = None
+        self._handle_connection(False)
 
     @callback
     def _handle_frame(self, raw: bytes) -> None:
@@ -55,3 +62,11 @@ class GBSControlCoordinator(DataUpdateCoordinator[dict]):
         if state is None:
             return
         self.async_set_updated_data(state)
+
+    @callback
+    def _handle_connection(self, connected: bool) -> None:
+        """Track WebSocket connectivity; refresh entity availability on change."""
+        if self._connected == connected:
+            return
+        self._connected = connected
+        self.async_update_listeners()
