@@ -1,5 +1,8 @@
 # GBS Control — Home Assistant integration
 
+[![HACS Custom](https://img.shields.io/badge/HACS-Custom-41BDF5.svg)](https://github.com/hacs/integration)
+[![Test](https://github.com/hudsonbrendon/ha-gbs-control/actions/workflows/test.yml/badge.svg)](https://github.com/hudsonbrendon/ha-gbs-control/actions/workflows/test.yml)
+
 Control and monitor a [GBS Control](https://github.com/ramapcsx2/gbs-control) video
 upscaler (GBS-8200 / GBS-8220 with the ESP firmware) from Home Assistant.
 
@@ -21,10 +24,14 @@ the requested state differs from the reported state.
 
 ## Installation (HACS)
 
-1. Add this repository as a custom repository in HACS (category: Integration).
+[![Open your Home Assistant instance and open this repository inside the Home Assistant Community Store.](https://my.home-assistant.io/badges/hacs_repository.svg)](https://my.home-assistant.io/redirect/hacs_repository/?owner=hudsonbrendon&repository=ha-gbs-control&category=integration)
+
+1. Add this repository as a custom repository in HACS (category: Integration) — or use the button above.
 2. Install "GBS Control" and restart Home Assistant.
 3. Settings → Devices & Services → Add Integration → GBS Control.
 4. Enter the host (default `gbscontrol.local`, or the IP, e.g. `192.168.31.251`).
+
+![Installing GBS Control via HACS](assets/install.gif)
 
 ## Caveats
 
