@@ -86,10 +86,17 @@ SWITCHES = [
 ]
 
 # Button definitions: key, friendly name, endpoint, char (None = path is a direct GET).
+# The adjustment buttons fire firmware step/cycle commands that have no readback,
+# so they are momentary actions rather than stateful entities.
 BUTTONS = [
     ("reboot", "Reboot", PATH_UC, "a"),
     ("restore_defaults", "Restore defaults", PATH_UC, "1"),
     ("save_custom_preset", "Save custom preset", PATH_UC, "4"),
     ("load_custom_preset", "Load custom preset", PATH_UC, "3"),
     ("restore_filters", "Restore filters", PATH_RESTORE_FILTERS, None),
+    ("scanline_strength", "Cycle scanline strength", PATH_UC, "K"),
+    ("sdram_clock", "Cycle SDRAM clock", PATH_UC, "l"),
+    ("frame_time_lock_method", "Cycle frame-time-lock method", PATH_UC, "i"),
+    ("vertical_mask_increase", "Vertical mask increase", PATH_UC, "C"),
+    ("vertical_mask_decrease", "Vertical mask decrease", PATH_UC, "D"),
 ]

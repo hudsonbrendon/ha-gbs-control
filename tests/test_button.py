@@ -12,7 +12,7 @@ async def test_all_buttons_created(hass):
     assert await hass.config_entries.async_setup(entry.entry_id)
     await hass.async_block_till_done()
     button_states = [s for s in hass.states.async_all() if s.entity_id.startswith("button.")]
-    assert len(button_states) == len(BUTTONS) == 5
+    assert len(button_states) == len(BUTTONS) == 10
 
 
 async def test_reboot_button_sends_uc_a(hass):
