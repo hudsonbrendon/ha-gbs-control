@@ -1,0 +1,13 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "GBS Control",
+        "description": "Enter the hostname or IP of your GBS Control device.",
+        "data": { "host": "Host" }
+      }
+    },
+    "error": { "cannot_connect": "Failed to connect to the device." },
+    "abort": { "already_configured": "This device is already configured." }
+  }
+}
