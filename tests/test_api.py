@@ -1,7 +1,13 @@
 """Tests for the GBS Control API client."""
-import pytest
+import re
+from unittest.mock import patch
 
-from custom_components.gbs_control.api import decode_status
+import aiohttp
+import pytest
+from aioresponses import aioresponses
+from homeassistant.helpers.aiohttp_client import async_get_clientsession
+
+from custom_components.gbs_control.api import GBSControlApiClient, decode_status
 from custom_components.gbs_control.const import (
     FLAGS_BYTE3,
     FLAGS_BYTE4,
@@ -50,3 +56,92 @@ def test_decode_status_rejects_non_status_frame():
     assert decode_status(b"") is None
     # 6 bytes, starts with '#', but flag bytes missing 0x40 marker -> log noise
     assert decode_status(bytes([ord("#"), 1, 2, 3, 4, 5])) is None
+
+
+class _FakeResponse:
+    """Minimal async-context-manager stand-in for an aiohttp response."""
+
+    def raise_for_status(self) -> None:
+        return None
+
+    async def __aenter__(self) -> "_FakeResponse":
+        return self
+
+    async def __aexit__(self, *exc) -> bool:
+        return False
+
+
+async def test_send_command_builds_uc_url(hass):
+    # The command char is the bare query-param NAME, so the built URL must be
+    # exactly ".../uc?7". aioresponses normalises bare params away, so we capture
+    # the URL passed to session.get directly to prove the char is included.
+    session = async_get_clientsession(hass)
+    client = GBSControlApiClient("gbscontrol.local", session)
+    captured: dict[str, str] = {}
+
+    def _capture(url, **kwargs):
+        captured["url"] = url
+        return _FakeResponse()
+
+    with patch.object(session, "get", side_effect=_capture):
+        await client.send_command("/uc", "7")
+
+    assert captured["url"] == "http://gbscontrol.local/uc?7"
+
+
+async def test_send_sc_command_builds_sc_url(hass):
+    session = async_get_clientsession(hass)
+    client = GBSControlApiClient("gbscontrol.local", session)
+    captured: dict[str, str] = {}
+
+    def _capture(url, **kwargs):
+        captured["url"] = url
+        return _FakeResponse()
+
+    with patch.object(session, "get", side_effect=_capture):
+        await client.send_command("/sc", "T")
+
+    assert captured["url"] == "http://gbscontrol.local/sc?T"
+
+
+async def test_send_path_get(hass):
+    session = async_get_clientsession(hass)
+    client = GBSControlApiClient("gbscontrol.local", session)
+    captured: dict[str, str] = {}
+
+    def _capture(url, **kwargs):
+        captured["url"] = url
+        return _FakeResponse()
+
+    with patch.object(session, "get", side_effect=_capture):
+        await client.send_path("/gbs/restore-filters")
+
+    assert captured["url"] == "http://gbscontrol.local/gbs/restore-filters"
+
+
+async def test_send_command_raises_on_error_status(hass):
+    # A non-2xx device response must propagate (send_command calls raise_for_status).
+    session = async_get_clientsession(hass)
+    client = GBSControlApiClient("gbscontrol.local", session)
+    with aioresponses() as mocked:
+        mocked.get(re.compile(r"http://gbscontrol\.local/uc.*"), status=500)
+        with pytest.raises(aiohttp.ClientResponseError):
+            await client.send_command("/uc", "7")
+
+
+async def test_async_check_connection_true(hass):
+    session = async_get_clientsession(hass)
+    client = GBSControlApiClient("gbscontrol.local", session)
+    with aioresponses() as mocked:
+        mocked.get("http://gbscontrol.local/", status=200, body=b"gzip-bytes")
+        assert await client.async_check_connection() is True
+
+
+async def test_async_check_connection_false_on_error(hass):
+    from aiohttp import ClientError
+
+    session = async_get_clientsession(hass)
+    client = GBSControlApiClient("gbscontrol.local", session)
+    with aioresponses() as mocked:
+        mocked.get("http://gbscontrol.local/", exception=ClientError())
+        assert await client.async_check_connection() is False
