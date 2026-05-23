@@ -3,7 +3,6 @@ from __future__ import annotations
 
 import asyncio
 import logging
-from contextlib import suppress
 
 from homeassistant.core import HomeAssistant, callback
 from homeassistant.helpers.aiohttp_client import async_get_clientsession
@@ -39,8 +38,14 @@ class GBSControlCoordinator(DataUpdateCoordinator[dict]):
         self._stop_event.set()
         if self._listen_task:
             self._listen_task.cancel()
-            with suppress(asyncio.CancelledError):
+            try:
                 await self._listen_task
+            except asyncio.CancelledError:
+                pass
+            except Exception as err:  # noqa: BLE001 - cleanup must never fail unload
+                # The listener may surface a stray error when cancelled mid-I/O
+                # (e.g. the DNS resolver). Log it, but never let it block unload.
+                _LOGGER.debug("Error stopping GBS Control listener: %s", err)
             self._listen_task = None
 
     @callback
