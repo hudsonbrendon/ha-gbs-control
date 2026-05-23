@@ -1,11 +1,12 @@
 """Tests for the GBS Control API client."""
+import asyncio
 import re
-from unittest.mock import patch
+from unittest.mock import AsyncMock, patch
 
 import aiohttp
-import pytest
 from aioresponses import aioresponses
 from homeassistant.helpers.aiohttp_client import async_get_clientsession
+import pytest
 
 from custom_components.gbs_control.api import GBSControlApiClient, decode_status
 from custom_components.gbs_control.const import (
@@ -145,3 +146,83 @@ async def test_async_check_connection_false_on_error(hass):
     with aioresponses() as mocked:
         mocked.get("http://gbscontrol.local/", exception=ClientError())
         assert await client.async_check_connection() is False
+
+
+# --- listen() reconnect-loop coverage ---------------------------------------
+
+
+class _FakeWS:
+    """Async-context-manager + async-iterator standing in for a WS connection."""
+
+    def __init__(self, messages):
+        self._messages = list(messages)
+
+    async def __aenter__(self):
+        return self
+
+    async def __aexit__(self, *exc):
+        return False
+
+    def __aiter__(self):
+        return self
+
+    async def __anext__(self):
+        if not self._messages:
+            raise StopAsyncIteration
+        return self._messages.pop(0)
+
+
+class _RaisingCM:
+    def __init__(self, exc):
+        self._exc = exc
+
+    async def __aenter__(self):
+        raise self._exc
+
+    async def __aexit__(self, *exc):
+        return False
+
+
+class _FakeSession:
+    """Yields a scripted sequence of ws_connect attempts."""
+
+    def __init__(self, attempts):
+        self._attempts = attempts
+        self.connect_calls = 0
+
+    def ws_connect(self, url, **kwargs):
+        attempt = self._attempts[min(self.connect_calls, len(self._attempts) - 1)]
+        self.connect_calls += 1
+        if isinstance(attempt, Exception):
+            return _RaisingCM(attempt)
+        return _FakeWS(attempt)
+
+
+async def test_listen_reconnects_and_reports_connection():
+    # Attempt 1 fails to connect; attempt 2 connects, delivers one status frame,
+    # then closes. on_frame stops the loop after the first frame.
+    frame = bytes([ord("#"), ord("1"), 0, 0x40, 0x40, 0x40])
+    messages = [
+        aiohttp.WSMessage(aiohttp.WSMsgType.TEXT, frame.decode("latin-1"), None),
+        aiohttp.WSMessage(aiohttp.WSMsgType.CLOSE, None, None),
+    ]
+    session = _FakeSession([aiohttp.ClientError("boom"), messages])
+    client = GBSControlApiClient("gbscontrol.local", session)
+
+    stop = asyncio.Event()
+    frames: list[bytes] = []
+    connections: list[bool] = []
+
+    def on_frame(raw: bytes) -> None:
+        frames.append(raw)
+        stop.set()
+
+    def on_connection(connected: bool) -> None:
+        connections.append(connected)
+
+    with patch("custom_components.gbs_control.api.asyncio.sleep", new=AsyncMock()):
+        await asyncio.wait_for(client.listen(on_frame, stop, on_connection), timeout=5)
+
+    assert frames == [frame]  # frame decoded and forwarded after the reconnect
+    assert connections == [True, False]  # connected, then dropped on close
+    assert session.connect_calls == 2  # retried after the first failed connect

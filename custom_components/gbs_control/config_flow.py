@@ -3,9 +3,9 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING
 
-import voluptuous as vol
 from homeassistant.config_entries import ConfigFlow, ConfigFlowResult
 from homeassistant.helpers.aiohttp_client import async_get_clientsession
+import voluptuous as vol
 
 from .api import GBSControlApiClient
 from .const import DEFAULT_HOST, DOMAIN

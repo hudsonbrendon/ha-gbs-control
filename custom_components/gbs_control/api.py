@@ -2,8 +2,8 @@
 from __future__ import annotations
 
 import asyncio
-import logging
 from collections.abc import Callable
+import logging
 
 import aiohttp
 
@@ -84,7 +84,7 @@ class GBSControlApiClient:
                 f"{self.base_url}/", timeout=aiohttp.ClientTimeout(total=10)
             ) as resp:
                 return resp.status == 200
-        except (aiohttp.ClientError, asyncio.TimeoutError):
+        except (TimeoutError, aiohttp.ClientError):
             return False
 
     async def listen(
@@ -130,7 +130,7 @@ class GBSControlApiClient:
                             aiohttp.WSMsgType.ERROR,
                         ):
                             break
-            except (aiohttp.ClientError, asyncio.TimeoutError) as err:
+            except (TimeoutError, aiohttp.ClientError) as err:
                 _LOGGER.debug("GBS Control WebSocket error: %s", err)
             finally:
                 if connected and on_connection is not None:
