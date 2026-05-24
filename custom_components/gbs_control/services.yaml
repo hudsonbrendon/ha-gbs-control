@@ -17,3 +17,42 @@ send_command:
           options:
             - "uc"
             - "sc"
+set_slot:
+  fields:
+    device_id:
+      required: true
+      selector:
+        device:
+          integration: gbs_control
+    slot:
+      required: true
+      example: "0"
+      selector:
+        text:
+save_slot:
+  fields:
+    device_id:
+      required: true
+      selector:
+        device:
+          integration: gbs_control
+    index:
+      required: true
+      example: 0
+      selector:
+        number:
+          min: 0
+          max: 63
+          mode: box
+    name:
+      required: true
+      example: "SNES 720p"
+      selector:
+        text:
+remove_slot:
+  fields:
+    device_id:
+      required: true
+      selector:
+        device:
+          integration: gbs_control

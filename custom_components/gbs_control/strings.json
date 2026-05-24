@@ -48,6 +48,48 @@
           "description": "uc = user/web command, sc = low-level serial command."
         }
       }
+    },
+    "set_slot": {
+      "name": "Set active slot",
+      "description": "Switch the device to a saved slot.",
+      "fields": {
+        "device_id": {
+          "name": "Device",
+          "description": "The GBS Control device to send the command to."
+        },
+        "slot": {
+          "name": "Slot",
+          "description": "Slot identifier (single character) as used by the device, e.g. 0."
+        }
+      }
+    },
+    "save_slot": {
+      "name": "Save slot",
+      "description": "Save the current settings to a slot with a name.",
+      "fields": {
+        "device_id": {
+          "name": "Device",
+          "description": "The GBS Control device to send the command to."
+        },
+        "index": {
+          "name": "Index",
+          "description": "Slot index (0-based)."
+        },
+        "name": {
+          "name": "Name",
+          "description": "Name to store for the slot."
+        }
+      }
+    },
+    "remove_slot": {
+      "name": "Remove active slot",
+      "description": "Remove the currently active slot.",
+      "fields": {
+        "device_id": {
+          "name": "Device",
+          "description": "The GBS Control device to send the command to."
+        }
+      }
     }
   },
   "entity": {

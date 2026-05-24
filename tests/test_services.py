@@ -56,3 +56,32 @@ async def test_send_command_service_unknown_device(hass):
             {"device_id": "does-not-exist", "command": "a"},
             blocking=True,
         )
+
+
+async def test_set_slot_service(hass):
+    coordinator, device = await _setup(hass)
+    with patch.object(coordinator.api, "send_get", new=AsyncMock()) as send:
+        await hass.services.async_call(
+            DOMAIN, "set_slot", {"device_id": device.id, "slot": "0"}, blocking=True
+        )
+        send.assert_awaited_once_with("/slot/set", {"slot": "0"})
+
+
+async def test_save_slot_service_preserves_param_order(hass):
+    coordinator, device = await _setup(hass)
+    with patch.object(coordinator.api, "send_get", new=AsyncMock()) as send:
+        await hass.services.async_call(
+            DOMAIN, "save_slot",
+            {"device_id": device.id, "index": 2, "name": "SNES 720p"},
+            blocking=True,
+        )
+        send.assert_awaited_once_with("/slot/save", {"index": "2", "name": "SNES 720p"})
+
+
+async def test_remove_slot_service(hass):
+    coordinator, device = await _setup(hass)
+    with patch.object(coordinator.api, "send_command", new=AsyncMock()) as send:
+        await hass.services.async_call(
+            DOMAIN, "remove_slot", {"device_id": device.id}, blocking=True
+        )
+        send.assert_awaited_once_with("/slot/remove", "1")

@@ -48,6 +48,48 @@
           "description": "uc = comando de usuário/web, sc = comando serial de baixo nível."
         }
       }
+    },
+    "set_slot": {
+      "name": "Definir slot ativo",
+      "description": "Muda o dispositivo para um slot salvo.",
+      "fields": {
+        "device_id": {
+          "name": "Dispositivo",
+          "description": "O dispositivo GBS Control para onde enviar o comando."
+        },
+        "slot": {
+          "name": "Slot",
+          "description": "Identificador do slot (um caractere) usado pelo dispositivo, ex.: 0."
+        }
+      }
+    },
+    "save_slot": {
+      "name": "Salvar slot",
+      "description": "Salva as configurações atuais em um slot com um nome.",
+      "fields": {
+        "device_id": {
+          "name": "Dispositivo",
+          "description": "O dispositivo GBS Control para onde enviar o comando."
+        },
+        "index": {
+          "name": "Índice",
+          "description": "Índice do slot (base 0)."
+        },
+        "name": {
+          "name": "Nome",
+          "description": "Nome a salvar para o slot."
+        }
+      }
+    },
+    "remove_slot": {
+      "name": "Remover slot ativo",
+      "description": "Remove o slot atualmente ativo.",
+      "fields": {
+        "device_id": {
+          "name": "Dispositivo",
+          "description": "O dispositivo GBS Control para onde enviar o comando."
+        }
+      }
     }
   },
   "entity": {

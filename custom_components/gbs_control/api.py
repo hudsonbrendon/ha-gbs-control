@@ -77,6 +77,18 @@ class GBSControlApiClient:
         async with self._session.get(url, timeout=aiohttp.ClientTimeout(total=10)) as resp:
             resp.raise_for_status()
 
+    async def send_get(self, path: str, params: dict[str, str]) -> None:
+        """GET a path with value-based query params (e.g. /slot/set?slot=0).
+
+        Unlike send_command (which uses the bare param NAME), the slot endpoints
+        read param VALUES, and order matters (the firmware uses getParam(0/1)).
+        """
+        url = f"{self.base_url}{path}"
+        async with self._session.get(
+            url, params=params, timeout=aiohttp.ClientTimeout(total=10)
+        ) as resp:
+            resp.raise_for_status()
+
     async def async_check_connection(self) -> bool:
         """Return True if the device root responds 200."""
         try:

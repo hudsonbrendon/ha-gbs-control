@@ -48,6 +48,48 @@
           "description": "uc = comando de usuario/web, sc = comando serie de bajo nivel."
         }
       }
+    },
+    "set_slot": {
+      "name": "Establecer ranura activa",
+      "description": "Cambia el dispositivo a una ranura guardada.",
+      "fields": {
+        "device_id": {
+          "name": "Dispositivo",
+          "description": "El dispositivo GBS Control al que enviar el comando."
+        },
+        "slot": {
+          "name": "Ranura",
+          "description": "Identificador de ranura (un carácter) que usa el dispositivo, p. ej. 0."
+        }
+      }
+    },
+    "save_slot": {
+      "name": "Guardar ranura",
+      "description": "Guarda la configuración actual en una ranura con un nombre.",
+      "fields": {
+        "device_id": {
+          "name": "Dispositivo",
+          "description": "El dispositivo GBS Control al que enviar el comando."
+        },
+        "index": {
+          "name": "Índice",
+          "description": "Índice de ranura (base 0)."
+        },
+        "name": {
+          "name": "Nombre",
+          "description": "Nombre a guardar para la ranura."
+        }
+      }
+    },
+    "remove_slot": {
+      "name": "Eliminar ranura activa",
+      "description": "Elimina la ranura actualmente activa.",
+      "fields": {
+        "device_id": {
+          "name": "Dispositivo",
+          "description": "El dispositivo GBS Control al que enviar el comando."
+        }
+      }
     }
   },
   "entity": {

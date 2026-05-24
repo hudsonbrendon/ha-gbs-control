@@ -120,6 +120,23 @@ async def test_send_path_get(hass):
     assert captured["url"] == "http://gbscontrol.local/gbs/restore-filters"
 
 
+async def test_send_get_passes_query_params(hass):
+    session = async_get_clientsession(hass)
+    client = GBSControlApiClient("gbscontrol.local", session)
+    captured: dict = {}
+
+    def _capture(url, **kwargs):
+        captured["url"] = url
+        captured["params"] = kwargs.get("params")
+        return _FakeResponse()
+
+    with patch.object(session, "get", side_effect=_capture):
+        await client.send_get("/slot/save", {"index": "2", "name": "Foo"})
+
+    assert captured["url"] == "http://gbscontrol.local/slot/save"
+    assert captured["params"] == {"index": "2", "name": "Foo"}
+
+
 async def test_send_command_raises_on_error_status(hass):
     # A non-2xx device response must propagate (send_command calls raise_for_status).
     session = async_get_clientsession(hass)
