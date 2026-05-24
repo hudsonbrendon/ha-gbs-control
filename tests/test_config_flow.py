@@ -73,6 +73,41 @@ async def test_zeroconf_discovery_flow(hass):
     assert result2["data"] == {"host": "192.168.31.251"}
 
 
+async def test_reconfigure_updates_host(hass):
+    entry = MockConfigEntry(
+        domain=DOMAIN, data={"host": "gbscontrol.local"}, unique_id="gbscontrol.local"
+    )
+    entry.add_to_hass(hass)
+
+    result = await entry.start_reconfigure_flow(hass)
+    assert result["type"] == data_entry_flow.FlowResultType.FORM
+    assert result["step_id"] == "reconfigure"
+
+    with patch(CHECK_CONNECTION, return_value=True):
+        result2 = await hass.config_entries.flow.async_configure(
+            result["flow_id"], {"host": "192.168.31.251"}
+        )
+    assert result2["type"] == data_entry_flow.FlowResultType.ABORT
+    assert result2["reason"] == "reconfigure_successful"
+    assert entry.data["host"] == "192.168.31.251"
+
+
+async def test_reconfigure_cannot_connect(hass):
+    entry = MockConfigEntry(
+        domain=DOMAIN, data={"host": "gbscontrol.local"}, unique_id="gbscontrol.local"
+    )
+    entry.add_to_hass(hass)
+
+    result = await entry.start_reconfigure_flow(hass)
+    with patch(CHECK_CONNECTION, return_value=False):
+        result2 = await hass.config_entries.flow.async_configure(
+            result["flow_id"], {"host": "bad.local"}
+        )
+    assert result2["type"] == data_entry_flow.FlowResultType.FORM
+    assert result2["errors"] == {"base": "cannot_connect"}
+    assert entry.data["host"] == "gbscontrol.local"  # unchanged
+
+
 async def test_zeroconf_aborts_when_already_configured(hass):
     entry = MockConfigEntry(
         domain=DOMAIN, data={"host": "192.168.31.251"}, unique_id="gbscontrol.local"

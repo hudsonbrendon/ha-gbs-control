@@ -3,18 +3,16 @@ from __future__ import annotations
 
 from typing import Any
 
-from homeassistant.config_entries import ConfigEntry
 from homeassistant.core import HomeAssistant
 
-from .const import DOMAIN
-from .coordinator import GBSControlCoordinator
+from .coordinator import GBSConfigEntry
 
 
 async def async_get_config_entry_diagnostics(
-    hass: HomeAssistant, entry: ConfigEntry
+    hass: HomeAssistant, entry: GBSConfigEntry
 ) -> dict[str, Any]:
     """Return diagnostics for a config entry."""
-    coordinator: GBSControlCoordinator = hass.data[DOMAIN][entry.entry_id]
+    coordinator = entry.runtime_data
     return {
         "host": coordinator.host,
         "connected": coordinator.connected,

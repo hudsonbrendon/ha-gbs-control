@@ -2,19 +2,20 @@
 from __future__ import annotations
 
 from homeassistant.components.button import ButtonEntity
-from homeassistant.config_entries import ConfigEntry
 from homeassistant.core import HomeAssistant
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
 
-from .const import BUTTONS, DOMAIN
-from .coordinator import GBSControlCoordinator
+from .const import BUTTONS
+from .coordinator import GBSConfigEntry, GBSControlCoordinator
 from .entity import GBSControlEntity
+
+PARALLEL_UPDATES = 1
 
 
 async def async_setup_entry(
-    hass: HomeAssistant, entry: ConfigEntry, async_add_entities: AddEntitiesCallback
+    hass: HomeAssistant, entry: GBSConfigEntry, async_add_entities: AddEntitiesCallback
 ) -> None:
-    coordinator = hass.data[DOMAIN][entry.entry_id]
+    coordinator = entry.runtime_data
     async_add_entities(
         GBSButton(coordinator, key, path, char) for key, path, char in BUTTONS
     )

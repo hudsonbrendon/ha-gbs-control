@@ -12,6 +12,13 @@
       "zeroconf_confirm": {
         "title": "GBS Control",
         "description": "Deseja adicionar o dispositivo GBS Control em {name}?"
+      },
+      "reconfigure": {
+        "title": "GBS Control",
+        "description": "Atualize o hostname ou IP do seu dispositivo GBS Control.",
+        "data": {
+          "host": "Host"
+        }
       }
     },
     "error": {
@@ -19,7 +26,8 @@
     },
     "abort": {
       "already_configured": "Este dispositivo já está configurado.",
-      "cannot_connect": "Falha ao conectar ao dispositivo."
+      "cannot_connect": "Falha ao conectar ao dispositivo.",
+      "reconfigure_successful": "Reconfiguração concluída com sucesso."
     }
   },
   "services": {

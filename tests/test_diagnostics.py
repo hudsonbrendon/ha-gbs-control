@@ -13,7 +13,7 @@ async def test_diagnostics_reports_state(hass):
     assert await hass.config_entries.async_setup(entry.entry_id)
     await hass.async_block_till_done()
 
-    coordinator = hass.data[DOMAIN][entry.entry_id]
+    coordinator = entry.runtime_data
     coordinator._handle_connection(True)
     coordinator.async_set_updated_data({"preset": "1", "scanlines": True})
 

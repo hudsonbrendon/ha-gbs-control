@@ -14,7 +14,7 @@ async def _setup(hass):
     entry.add_to_hass(hass)
     assert await hass.config_entries.async_setup(entry.entry_id)
     await hass.async_block_till_done()
-    coordinator = hass.data[DOMAIN][entry.entry_id]
+    coordinator = entry.runtime_data
     device = dr.async_get(hass).async_get_device(identifiers={(DOMAIN, "gbscontrol.local")})
     return coordinator, device
 

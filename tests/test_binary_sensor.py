@@ -25,7 +25,7 @@ async def test_connectivity_on_when_connected(hass):
     assert await hass.config_entries.async_setup(entry.entry_id)
     await hass.async_block_till_done()
 
-    coordinator = hass.data[DOMAIN][entry.entry_id]
+    coordinator = entry.runtime_data
     coordinator._handle_connection(True)
     await hass.async_block_till_done()
     assert hass.states.get(ENTITY).state == "on"

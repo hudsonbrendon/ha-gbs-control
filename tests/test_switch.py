@@ -21,7 +21,7 @@ async def test_scanlines_turn_on_sends_toggle_only_when_off(hass):
     assert await hass.config_entries.async_setup(entry.entry_id)
     await hass.async_block_till_done()
 
-    coordinator = hass.data[DOMAIN][entry.entry_id]
+    coordinator = entry.runtime_data
     coordinator._handle_connection(True)  # simulate a connected device
     coordinator.async_set_updated_data({"scanlines": False})
     await hass.async_block_till_done()
@@ -47,7 +47,7 @@ async def test_deinterlace_uses_distinct_on_off_commands(hass):
     assert await hass.config_entries.async_setup(entry.entry_id)
     await hass.async_block_till_done()
 
-    coordinator = hass.data[DOMAIN][entry.entry_id]
+    coordinator = entry.runtime_data
     coordinator._handle_connection(True)  # simulate a connected device
     coordinator.async_set_updated_data({"deinterlace": False})
     await hass.async_block_till_done()
@@ -72,7 +72,7 @@ async def test_turn_off_noop_when_already_off(hass):
     assert await hass.config_entries.async_setup(entry.entry_id)
     await hass.async_block_till_done()
 
-    coordinator = hass.data[DOMAIN][entry.entry_id]
+    coordinator = entry.runtime_data
     coordinator._handle_connection(True)  # simulate a connected device
     coordinator.async_set_updated_data({"scanlines": False})
     await hass.async_block_till_done()
@@ -92,7 +92,7 @@ async def test_no_command_when_state_unknown(hass):
     assert await hass.config_entries.async_setup(entry.entry_id)
     await hass.async_block_till_done()
 
-    coordinator = hass.data[DOMAIN][entry.entry_id]
+    coordinator = entry.runtime_data
     coordinator._handle_connection(True)  # simulate a connected device
     assert coordinator.data == {}  # no frame received yet
 

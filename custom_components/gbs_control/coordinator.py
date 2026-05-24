@@ -4,6 +4,7 @@ from __future__ import annotations
 import asyncio
 import logging
 
+from homeassistant.config_entries import ConfigEntry
 from homeassistant.core import HomeAssistant, callback
 from homeassistant.helpers.aiohttp_client import async_get_clientsession
 from homeassistant.helpers.update_coordinator import DataUpdateCoordinator
@@ -12,6 +13,9 @@ from .api import GBSControlApiClient, decode_status
 from .const import DOMAIN
 
 _LOGGER = logging.getLogger(__name__)
+
+# Config entry typed with its runtime coordinator (stored in entry.runtime_data).
+type GBSConfigEntry = ConfigEntry[GBSControlCoordinator]
 
 
 class GBSControlCoordinator(DataUpdateCoordinator[dict]):

@@ -1,13 +1,12 @@
 """GBS Control integration for Home Assistant."""
 from __future__ import annotations
 
-from homeassistant.config_entries import ConfigEntry
 from homeassistant.const import Platform
 from homeassistant.core import HomeAssistant
+from homeassistant.helpers.typing import ConfigType
 
-from .const import DOMAIN
-from .coordinator import GBSControlCoordinator
-from .services import async_setup_services, async_unload_services
+from .coordinator import GBSConfigEntry, GBSControlCoordinator
+from .services import async_setup_services
 
 PLATFORMS = [
     Platform.BINARY_SENSOR,
@@ -18,24 +17,25 @@ PLATFORMS = [
 ]
 
 
-async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
-    """Set up GBS Control from a config entry."""
-    coordinator = GBSControlCoordinator(hass, entry.data["host"])
-    await coordinator.async_start()
-
-    hass.data.setdefault(DOMAIN, {})[entry.entry_id] = coordinator
-    await hass.config_entries.async_forward_entry_setups(entry, PLATFORMS)
+async def async_setup(hass: HomeAssistant, config: ConfigType) -> bool:
+    """Register integration-wide services."""
     async_setup_services(hass)
     return True
 
 
-async def async_unload_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
+async def async_setup_entry(hass: HomeAssistant, entry: GBSConfigEntry) -> bool:
+    """Set up GBS Control from a config entry."""
+    coordinator = GBSControlCoordinator(hass, entry.data["host"])
+    await coordinator.async_start()
+
+    entry.runtime_data = coordinator
+    await hass.config_entries.async_forward_entry_setups(entry, PLATFORMS)
+    return True
+
+
+async def async_unload_entry(hass: HomeAssistant, entry: GBSConfigEntry) -> bool:
     """Unload a config entry."""
     unload_ok = await hass.config_entries.async_unload_platforms(entry, PLATFORMS)
     if unload_ok:
-        coordinator: GBSControlCoordinator = hass.data[DOMAIN].pop(entry.entry_id)
-        await coordinator.async_stop()
-        # Remove the integration-wide service once the last entry is gone.
-        if not hass.data[DOMAIN]:
-            async_unload_services(hass)
+        await entry.runtime_data.async_stop()
     return unload_ok

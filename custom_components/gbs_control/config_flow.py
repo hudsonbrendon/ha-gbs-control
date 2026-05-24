@@ -41,6 +41,27 @@ class GBSControlConfigFlow(ConfigFlow, domain=DOMAIN):
             errors=errors,
         )
 
+    async def async_step_reconfigure(self, user_input=None) -> ConfigFlowResult:
+        """Change the host/IP of an existing entry without removing it."""
+        entry = self._get_reconfigure_entry()
+        errors: dict[str, str] = {}
+        if user_input is not None:
+            host = user_input["host"]
+            client = GBSControlApiClient(host, async_get_clientsession(self.hass))
+            if await client.async_check_connection():
+                return self.async_update_reload_and_abort(
+                    entry, data_updates={"host": host}
+                )
+            errors["base"] = "cannot_connect"
+
+        return self.async_show_form(
+            step_id="reconfigure",
+            data_schema=vol.Schema(
+                {vol.Required("host", default=entry.data["host"]): str}
+            ),
+            errors=errors,
+        )
+
     async def async_step_zeroconf(
         self, discovery_info: ZeroconfServiceInfo
     ) -> ConfigFlowResult:

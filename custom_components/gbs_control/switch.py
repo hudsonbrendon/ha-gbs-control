@@ -2,19 +2,20 @@
 from __future__ import annotations
 
 from homeassistant.components.switch import SwitchEntity
-from homeassistant.config_entries import ConfigEntry
 from homeassistant.core import HomeAssistant
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
 
-from .const import DOMAIN, SWITCHES
-from .coordinator import GBSControlCoordinator
+from .const import SWITCHES
+from .coordinator import GBSConfigEntry, GBSControlCoordinator
 from .entity import GBSControlEntity
+
+PARALLEL_UPDATES = 1
 
 
 async def async_setup_entry(
-    hass: HomeAssistant, entry: ConfigEntry, async_add_entities: AddEntitiesCallback
+    hass: HomeAssistant, entry: GBSConfigEntry, async_add_entities: AddEntitiesCallback
 ) -> None:
-    coordinator = hass.data[DOMAIN][entry.entry_id]
+    coordinator = entry.runtime_data
     async_add_entities(
         GBSSwitch(coordinator, key, on_path, on_char, off_path, off_char)
         for key, on_path, on_char, off_path, off_char in SWITCHES

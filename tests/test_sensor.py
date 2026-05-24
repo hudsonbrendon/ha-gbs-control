@@ -10,7 +10,7 @@ async def test_sensors_render_from_coordinator(hass):
     assert await hass.config_entries.async_setup(entry.entry_id)
     await hass.async_block_till_done()
 
-    coordinator = hass.data[DOMAIN][entry.entry_id]
+    coordinator = entry.runtime_data
     coordinator._handle_connection(True)  # simulate a connected device
     coordinator.async_set_updated_data({"preset": "8", "slot": 3})
     await hass.async_block_till_done()
@@ -33,7 +33,7 @@ async def test_sensor_unavailable_until_connected(hass):
     preset = hass.states.get("sensor.gbs_control_output_preset")
     assert preset.state == "unavailable"
 
-    coordinator = hass.data[DOMAIN][entry.entry_id]
+    coordinator = entry.runtime_data
     coordinator._handle_connection(True)
     coordinator.async_set_updated_data({"preset": "1", "slot": 0})
     await hass.async_block_till_done()

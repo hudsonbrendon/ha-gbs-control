@@ -12,7 +12,7 @@ async def test_select_options_and_command(hass):
     assert await hass.config_entries.async_setup(entry.entry_id)
     await hass.async_block_till_done()
 
-    coordinator = hass.data[DOMAIN][entry.entry_id]
+    coordinator = entry.runtime_data
     coordinator._handle_connection(True)  # simulate a connected device
 
     state = hass.states.get("select.gbs_control_output_resolution")

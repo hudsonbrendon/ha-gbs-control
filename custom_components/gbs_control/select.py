@@ -2,19 +2,20 @@
 from __future__ import annotations
 
 from homeassistant.components.select import SelectEntity
-from homeassistant.config_entries import ConfigEntry
 from homeassistant.core import HomeAssistant
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
 
-from .const import DOMAIN, RESOLUTION_COMMANDS
-from .coordinator import GBSControlCoordinator
+from .const import RESOLUTION_COMMANDS
+from .coordinator import GBSConfigEntry, GBSControlCoordinator
 from .entity import GBSControlEntity
+
+PARALLEL_UPDATES = 1
 
 
 async def async_setup_entry(
-    hass: HomeAssistant, entry: ConfigEntry, async_add_entities: AddEntitiesCallback
+    hass: HomeAssistant, entry: GBSConfigEntry, async_add_entities: AddEntitiesCallback
 ) -> None:
-    coordinator = hass.data[DOMAIN][entry.entry_id]
+    coordinator = entry.runtime_data
     async_add_entities([GBSResolutionSelect(coordinator, "output_resolution")])
 
 

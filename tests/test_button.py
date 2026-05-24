@@ -21,7 +21,7 @@ async def test_reboot_button_sends_uc_a(hass):
     assert await hass.config_entries.async_setup(entry.entry_id)
     await hass.async_block_till_done()
 
-    coordinator = hass.data[DOMAIN][entry.entry_id]
+    coordinator = entry.runtime_data
     coordinator._handle_connection(True)  # simulate a connected device
     with patch.object(coordinator.api, "send_command", new=AsyncMock()) as send:
         await hass.services.async_call(
@@ -36,7 +36,7 @@ async def test_restore_filters_button_uses_path(hass):
     assert await hass.config_entries.async_setup(entry.entry_id)
     await hass.async_block_till_done()
 
-    coordinator = hass.data[DOMAIN][entry.entry_id]
+    coordinator = entry.runtime_data
     coordinator._handle_connection(True)  # simulate a connected device
     with patch.object(coordinator.api, "send_path", new=AsyncMock()) as send:
         await hass.services.async_call(
