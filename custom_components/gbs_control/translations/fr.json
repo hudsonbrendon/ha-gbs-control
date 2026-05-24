@@ -1,0 +1,191 @@
+{
+  "config": {
+    "flow_title": "{name}",
+    "step": {
+      "user": {
+        "title": "GBS Control",
+        "description": "Saisissez le nom d'hôte ou l'IP de votre appareil GBS Control.",
+        "data": {
+          "host": "Hôte"
+        }
+      },
+      "zeroconf_confirm": {
+        "title": "GBS Control",
+        "description": "Voulez-vous ajouter l'appareil GBS Control à {name} ?"
+      },
+      "reconfigure": {
+        "title": "GBS Control",
+        "description": "Mettez à jour le nom d'hôte ou l'IP de votre appareil GBS Control.",
+        "data": {
+          "host": "Hôte"
+        }
+      }
+    },
+    "error": {
+      "cannot_connect": "Échec de la connexion à l'appareil."
+    },
+    "abort": {
+      "already_configured": "Cet appareil est déjà configuré.",
+      "cannot_connect": "Échec de la connexion à l'appareil.",
+      "reconfigure_successful": "Reconfiguration réussie."
+    }
+  },
+  "services": {
+    "send_command": {
+      "name": "Envoyer une commande",
+      "description": "Envoie une commande brute d'un seul caractère à un appareil GBS Control.",
+      "fields": {
+        "device_id": {
+          "name": "Appareil",
+          "description": "L'appareil GBS Control auquel envoyer la commande."
+        },
+        "command": {
+          "name": "Commande",
+          "description": "Caractère de commande unique, p. ex. 7 (lignes de balayage) ou f (accentuation)."
+        },
+        "path": {
+          "name": "Point de terminaison",
+          "description": "uc = commande utilisateur/web, sc = commande série de bas niveau."
+        }
+      }
+    },
+    "set_slot": {
+      "name": "Définir l'emplacement actif",
+      "description": "Bascule l'appareil vers un emplacement enregistré.",
+      "fields": {
+        "device_id": {
+          "name": "Appareil",
+          "description": "L'appareil GBS Control auquel envoyer la commande."
+        },
+        "slot": {
+          "name": "Emplacement",
+          "description": "Identifiant d'emplacement (un caractère) utilisé par l'appareil, p. ex. 0."
+        }
+      }
+    },
+    "save_slot": {
+      "name": "Enregistrer l'emplacement",
+      "description": "Enregistre les réglages actuels dans un emplacement avec un nom.",
+      "fields": {
+        "device_id": {
+          "name": "Appareil",
+          "description": "L'appareil GBS Control auquel envoyer la commande."
+        },
+        "index": {
+          "name": "Index",
+          "description": "Index de l'emplacement (base 0)."
+        },
+        "name": {
+          "name": "Nom",
+          "description": "Nom à enregistrer pour l'emplacement."
+        }
+      }
+    },
+    "remove_slot": {
+      "name": "Supprimer l'emplacement actif",
+      "description": "Supprime l'emplacement actuellement actif.",
+      "fields": {
+        "device_id": {
+          "name": "Appareil",
+          "description": "L'appareil GBS Control auquel envoyer la commande."
+        }
+      }
+    }
+  },
+  "entity": {
+    "sensor": {
+      "output_preset": {
+        "name": "Préréglage de sortie"
+      },
+      "active_slot": {
+        "name": "Emplacement actif"
+      }
+    },
+    "binary_sensor": {
+      "connectivity": {
+        "name": "Connectivité"
+      }
+    },
+    "select": {
+      "output_resolution": {
+        "name": "Résolution de sortie"
+      }
+    },
+    "switch": {
+      "scanlines": {
+        "name": "Lignes de balayage"
+      },
+      "line_filter": {
+        "name": "Filtre de lignes"
+      },
+      "frame_time_lock": {
+        "name": "Verrou de temps d'image"
+      },
+      "pal_force_60": {
+        "name": "Forcer PAL à 60 Hz"
+      },
+      "tap6": {
+        "name": "Filtre 6 prises"
+      },
+      "full_height": {
+        "name": "Hauteur totale"
+      },
+      "adc_calibration": {
+        "name": "Calibration ADC"
+      },
+      "scaling_rgbhv": {
+        "name": "Mise à l'échelle RGBHV"
+      },
+      "ext_clock_disabled": {
+        "name": "Horloge externe désactivée"
+      },
+      "peaking": {
+        "name": "Accentuation (peaking)"
+      },
+      "auto_gain": {
+        "name": "Gain automatique"
+      },
+      "output_component": {
+        "name": "Sortie composante"
+      },
+      "match_preset_source": {
+        "name": "Adapter le préréglage à la source"
+      },
+      "deinterlace": {
+        "name": "Désentrelacement adaptatif au mouvement"
+      }
+    },
+    "button": {
+      "reboot": {
+        "name": "Redémarrer"
+      },
+      "restore_defaults": {
+        "name": "Restaurer les valeurs par défaut"
+      },
+      "save_custom_preset": {
+        "name": "Enregistrer le préréglage personnalisé"
+      },
+      "load_custom_preset": {
+        "name": "Charger le préréglage personnalisé"
+      },
+      "restore_filters": {
+        "name": "Restaurer les filtres"
+      },
+      "scanline_strength": {
+        "name": "Faire défiler l'intensité des lignes"
+      },
+      "sdram_clock": {
+        "name": "Faire défiler l'horloge SDRAM"
+      },
+      "frame_time_lock_method": {
+        "name": "Faire défiler la méthode de verrou de temps"
+      },
+      "vertical_mask_increase": {
+        "name": "Augmenter le masque vertical"
+      },
+      "vertical_mask_decrease": {
+        "name": "Diminuer le masque vertical"
+      }
+    }
+  }
+}

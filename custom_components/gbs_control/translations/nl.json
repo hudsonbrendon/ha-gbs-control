@@ -1,0 +1,191 @@
+{
+  "config": {
+    "flow_title": "{name}",
+    "step": {
+      "user": {
+        "title": "GBS Control",
+        "description": "Voer de hostnaam of het IP van je GBS Control-apparaat in.",
+        "data": {
+          "host": "Host"
+        }
+      },
+      "zeroconf_confirm": {
+        "title": "GBS Control",
+        "description": "Wil je het GBS Control-apparaat op {name} toevoegen?"
+      },
+      "reconfigure": {
+        "title": "GBS Control",
+        "description": "Werk de hostnaam of het IP van je GBS Control-apparaat bij.",
+        "data": {
+          "host": "Host"
+        }
+      }
+    },
+    "error": {
+      "cannot_connect": "Kan geen verbinding maken met het apparaat."
+    },
+    "abort": {
+      "already_configured": "Dit apparaat is al geconfigureerd.",
+      "cannot_connect": "Kan geen verbinding maken met het apparaat.",
+      "reconfigure_successful": "Herconfiguratie geslaagd."
+    }
+  },
+  "services": {
+    "send_command": {
+      "name": "Commando verzenden",
+      "description": "Stuurt een rauw commando van één teken naar een GBS Control-apparaat.",
+      "fields": {
+        "device_id": {
+          "name": "Apparaat",
+          "description": "Het GBS Control-apparaat waarnaar de opdracht wordt gestuurd."
+        },
+        "command": {
+          "name": "Commando",
+          "description": "Eén commandoteken, bijv. 7 (scanlijnen) of f (peaking)."
+        },
+        "path": {
+          "name": "Endpoint",
+          "description": "uc = gebruikers-/webcommando, sc = laag-niveau serieel commando."
+        }
+      }
+    },
+    "set_slot": {
+      "name": "Actief slot instellen",
+      "description": "Schakelt het apparaat naar een opgeslagen slot.",
+      "fields": {
+        "device_id": {
+          "name": "Apparaat",
+          "description": "Het GBS Control-apparaat waarnaar de opdracht wordt gestuurd."
+        },
+        "slot": {
+          "name": "Slot",
+          "description": "Slot-aanduiding (één teken) zoals gebruikt door het apparaat, bijv. 0."
+        }
+      }
+    },
+    "save_slot": {
+      "name": "Slot opslaan",
+      "description": "Slaat de huidige instellingen op in een slot met een naam.",
+      "fields": {
+        "device_id": {
+          "name": "Apparaat",
+          "description": "Het GBS Control-apparaat waarnaar de opdracht wordt gestuurd."
+        },
+        "index": {
+          "name": "Index",
+          "description": "Slotindex (0-gebaseerd)."
+        },
+        "name": {
+          "name": "Naam",
+          "description": "Naam om voor het slot op te slaan."
+        }
+      }
+    },
+    "remove_slot": {
+      "name": "Actief slot verwijderen",
+      "description": "Verwijdert het momenteel actieve slot.",
+      "fields": {
+        "device_id": {
+          "name": "Apparaat",
+          "description": "Het GBS Control-apparaat waarnaar de opdracht wordt gestuurd."
+        }
+      }
+    }
+  },
+  "entity": {
+    "sensor": {
+      "output_preset": {
+        "name": "Uitvoerpreset"
+      },
+      "active_slot": {
+        "name": "Actief slot"
+      }
+    },
+    "binary_sensor": {
+      "connectivity": {
+        "name": "Verbinding"
+      }
+    },
+    "select": {
+      "output_resolution": {
+        "name": "Uitvoerresolutie"
+      }
+    },
+    "switch": {
+      "scanlines": {
+        "name": "Scanlijnen"
+      },
+      "line_filter": {
+        "name": "Lijnfilter"
+      },
+      "frame_time_lock": {
+        "name": "Frame-time-lock"
+      },
+      "pal_force_60": {
+        "name": "PAL naar 60 Hz forceren"
+      },
+      "tap6": {
+        "name": "6-taps filter"
+      },
+      "full_height": {
+        "name": "Volledige hoogte"
+      },
+      "adc_calibration": {
+        "name": "ADC-kalibratie"
+      },
+      "scaling_rgbhv": {
+        "name": "RGBHV-schaling"
+      },
+      "ext_clock_disabled": {
+        "name": "Externe klok uitgeschakeld"
+      },
+      "peaking": {
+        "name": "Peaking"
+      },
+      "auto_gain": {
+        "name": "Automatische versterking"
+      },
+      "output_component": {
+        "name": "Component-uitvoer"
+      },
+      "match_preset_source": {
+        "name": "Preset aan bron aanpassen"
+      },
+      "deinterlace": {
+        "name": "Bewegingsadaptief deïnterlacen"
+      }
+    },
+    "button": {
+      "reboot": {
+        "name": "Opnieuw opstarten"
+      },
+      "restore_defaults": {
+        "name": "Standaardwaarden herstellen"
+      },
+      "save_custom_preset": {
+        "name": "Aangepaste preset opslaan"
+      },
+      "load_custom_preset": {
+        "name": "Aangepaste preset laden"
+      },
+      "restore_filters": {
+        "name": "Filters herstellen"
+      },
+      "scanline_strength": {
+        "name": "Scanlijn-sterkte doorlopen"
+      },
+      "sdram_clock": {
+        "name": "SDRAM-klok doorlopen"
+      },
+      "frame_time_lock_method": {
+        "name": "Frame-time-lock-methode doorlopen"
+      },
+      "vertical_mask_increase": {
+        "name": "Verticaal masker verhogen"
+      },
+      "vertical_mask_decrease": {
+        "name": "Verticaal masker verlagen"
+      }
+    }
+  }
+}

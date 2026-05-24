@@ -1,0 +1,191 @@
+{
+  "config": {
+    "flow_title": "{name}",
+    "step": {
+      "user": {
+        "title": "GBS Control",
+        "description": "Gib den Hostnamen oder die IP deines GBS-Control-Geräts ein.",
+        "data": {
+          "host": "Host"
+        }
+      },
+      "zeroconf_confirm": {
+        "title": "GBS Control",
+        "description": "Möchtest du das GBS-Control-Gerät unter {name} hinzufügen?"
+      },
+      "reconfigure": {
+        "title": "GBS Control",
+        "description": "Aktualisiere den Hostnamen oder die IP deines GBS-Control-Geräts.",
+        "data": {
+          "host": "Host"
+        }
+      }
+    },
+    "error": {
+      "cannot_connect": "Verbindung zum Gerät fehlgeschlagen."
+    },
+    "abort": {
+      "already_configured": "Dieses Gerät ist bereits konfiguriert.",
+      "cannot_connect": "Verbindung zum Gerät fehlgeschlagen.",
+      "reconfigure_successful": "Neukonfiguration erfolgreich."
+    }
+  },
+  "services": {
+    "send_command": {
+      "name": "Befehl senden",
+      "description": "Sendet einen rohen Ein-Zeichen-Befehl an ein GBS-Control-Gerät.",
+      "fields": {
+        "device_id": {
+          "name": "Gerät",
+          "description": "Das GBS-Control-Gerät, an das der Befehl gesendet wird."
+        },
+        "command": {
+          "name": "Befehl",
+          "description": "Einzelnes Befehlszeichen, z. B. 7 (Scanlines) oder f (Peaking)."
+        },
+        "path": {
+          "name": "Endpunkt",
+          "description": "uc = Benutzer-/Web-Befehl, sc = Low-Level-Serienbefehl."
+        }
+      }
+    },
+    "set_slot": {
+      "name": "Aktiven Slot setzen",
+      "description": "Wechselt das Gerät zu einem gespeicherten Slot.",
+      "fields": {
+        "device_id": {
+          "name": "Gerät",
+          "description": "Das GBS-Control-Gerät, an das der Befehl gesendet wird."
+        },
+        "slot": {
+          "name": "Slot",
+          "description": "Slot-Kennung (einzelnes Zeichen), wie vom Gerät verwendet, z. B. 0."
+        }
+      }
+    },
+    "save_slot": {
+      "name": "Slot speichern",
+      "description": "Speichert die aktuellen Einstellungen in einem Slot mit Namen.",
+      "fields": {
+        "device_id": {
+          "name": "Gerät",
+          "description": "Das GBS-Control-Gerät, an das der Befehl gesendet wird."
+        },
+        "index": {
+          "name": "Index",
+          "description": "Slot-Index (0-basiert)."
+        },
+        "name": {
+          "name": "Name",
+          "description": "Name, der für den Slot gespeichert wird."
+        }
+      }
+    },
+    "remove_slot": {
+      "name": "Aktiven Slot entfernen",
+      "description": "Entfernt den aktuell aktiven Slot.",
+      "fields": {
+        "device_id": {
+          "name": "Gerät",
+          "description": "Das GBS-Control-Gerät, an das der Befehl gesendet wird."
+        }
+      }
+    }
+  },
+  "entity": {
+    "sensor": {
+      "output_preset": {
+        "name": "Ausgabe-Preset"
+      },
+      "active_slot": {
+        "name": "Aktiver Slot"
+      }
+    },
+    "binary_sensor": {
+      "connectivity": {
+        "name": "Verbindung"
+      }
+    },
+    "select": {
+      "output_resolution": {
+        "name": "Ausgabeauflösung"
+      }
+    },
+    "switch": {
+      "scanlines": {
+        "name": "Scanlines"
+      },
+      "line_filter": {
+        "name": "Zeilenfilter"
+      },
+      "frame_time_lock": {
+        "name": "Frame-Time-Lock"
+      },
+      "pal_force_60": {
+        "name": "PAL auf 60 Hz erzwingen"
+      },
+      "tap6": {
+        "name": "6-Tap-Filter"
+      },
+      "full_height": {
+        "name": "Volle Höhe"
+      },
+      "adc_calibration": {
+        "name": "ADC-Kalibrierung"
+      },
+      "scaling_rgbhv": {
+        "name": "RGBHV-Skalierung"
+      },
+      "ext_clock_disabled": {
+        "name": "Externer Takt deaktiviert"
+      },
+      "peaking": {
+        "name": "Peaking"
+      },
+      "auto_gain": {
+        "name": "Auto-Gain"
+      },
+      "output_component": {
+        "name": "Component-Ausgang"
+      },
+      "match_preset_source": {
+        "name": "Preset an Quelle anpassen"
+      },
+      "deinterlace": {
+        "name": "Bewegungsadaptives Deinterlacing"
+      }
+    },
+    "button": {
+      "reboot": {
+        "name": "Neu starten"
+      },
+      "restore_defaults": {
+        "name": "Standardwerte wiederherstellen"
+      },
+      "save_custom_preset": {
+        "name": "Eigenes Preset speichern"
+      },
+      "load_custom_preset": {
+        "name": "Eigenes Preset laden"
+      },
+      "restore_filters": {
+        "name": "Filter wiederherstellen"
+      },
+      "scanline_strength": {
+        "name": "Scanline-Stärke durchschalten"
+      },
+      "sdram_clock": {
+        "name": "SDRAM-Takt durchschalten"
+      },
+      "frame_time_lock_method": {
+        "name": "Frame-Time-Lock-Methode durchschalten"
+      },
+      "vertical_mask_increase": {
+        "name": "Vertikale Maske erhöhen"
+      },
+      "vertical_mask_decrease": {
+        "name": "Vertikale Maske verringern"
+      }
+    }
+  }
+}
