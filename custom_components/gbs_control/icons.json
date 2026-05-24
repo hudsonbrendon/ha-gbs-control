@@ -1,0 +1,48 @@
+{
+  "entity": {
+    "sensor": {
+      "output_preset": { "default": "mdi:television" },
+      "active_slot": { "default": "mdi:memory" }
+    },
+    "binary_sensor": {
+      "connectivity": {
+        "default": "mdi:lan-connect",
+        "state": { "off": "mdi:lan-disconnect" }
+      }
+    },
+    "select": {
+      "output_resolution": { "default": "mdi:monitor-screenshot" }
+    },
+    "switch": {
+      "scanlines": { "default": "mdi:television-classic" },
+      "line_filter": { "default": "mdi:filter" },
+      "frame_time_lock": { "default": "mdi:lock-clock" },
+      "pal_force_60": { "default": "mdi:sync" },
+      "tap6": { "default": "mdi:filter-variant" },
+      "full_height": { "default": "mdi:arrow-expand-vertical" },
+      "adc_calibration": { "default": "mdi:tune" },
+      "scaling_rgbhv": { "default": "mdi:resize" },
+      "ext_clock_disabled": { "default": "mdi:clock-remove" },
+      "peaking": { "default": "mdi:image-filter-center-focus" },
+      "auto_gain": { "default": "mdi:brightness-auto" },
+      "output_component": { "default": "mdi:video-input-component" },
+      "match_preset_source": { "default": "mdi:link-variant" },
+      "deinterlace": { "default": "mdi:blur" }
+    },
+    "button": {
+      "reboot": { "default": "mdi:restart" },
+      "restore_defaults": { "default": "mdi:backup-restore" },
+      "save_custom_preset": { "default": "mdi:content-save" },
+      "load_custom_preset": { "default": "mdi:download" },
+      "restore_filters": { "default": "mdi:filter-cog" },
+      "scanline_strength": { "default": "mdi:format-line-weight" },
+      "sdram_clock": { "default": "mdi:memory" },
+      "frame_time_lock_method": { "default": "mdi:lock-clock" },
+      "vertical_mask_increase": { "default": "mdi:arrow-expand-vertical" },
+      "vertical_mask_decrease": { "default": "mdi:arrow-collapse-vertical" }
+    }
+  },
+  "services": {
+    "send_command": { "service": "mdi:console-line" }
+  }
+}

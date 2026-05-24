@@ -24,7 +24,6 @@ class GBSResolutionSelect(GBSControlEntity, SelectEntity):
     maps cleanly to a resolution label, so current_option is optimistic —
     it reflects the last resolution this entity commanded."""
 
-    _attr_icon = "mdi:monitor-screenshot"
     _attr_options = list(RESOLUTION_COMMANDS)
 
     def __init__(self, coordinator: GBSControlCoordinator, key: str) -> None:

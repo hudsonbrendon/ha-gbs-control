@@ -25,7 +25,6 @@ async def async_setup_entry(
 
 
 class GBSPresetSensor(GBSControlEntity, SensorEntity):
-    _attr_icon = "mdi:television"
 
     @property
     def native_value(self) -> str | None:
@@ -36,7 +35,6 @@ class GBSPresetSensor(GBSControlEntity, SensorEntity):
 
 
 class GBSSlotSensor(GBSControlEntity, SensorEntity):
-    _attr_icon = "mdi:memory"
 
     @property
     def native_value(self) -> int | None:
