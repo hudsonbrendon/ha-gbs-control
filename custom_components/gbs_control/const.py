@@ -54,6 +54,16 @@ PRESET_LABELS = {
 PATH_UC = "/uc"
 PATH_SC = "/sc"
 PATH_RESTORE_FILTERS = "/gbs/restore-filters"
+PATH_SLOTS_BIN = "/bin/slots.bin"
+PATH_SLOT_SET = "/slot/set"
+
+# Preset slots: /bin/slots.bin is SLOTS_TOTAL records of SLOT_RECORD_LEN bytes,
+# each starting with a SLOT_NAME_LEN-byte name. Slot index i maps to the
+# identifier char SLOT_INDEX_MAP[i] (firmware slotIndexMap), e.g. 0 -> "A".
+SLOT_RECORD_LEN = 32
+SLOT_NAME_LEN = 25
+SLOT_INDEX_MAP = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-._~()!*:,"
+SLOT_EMPTY_NAME = "Empty"
 
 # Resolution select: option label -> /uc command char (verified in firmware).
 RESOLUTION_COMMANDS = {

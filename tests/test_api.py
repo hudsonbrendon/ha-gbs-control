@@ -137,6 +137,19 @@ async def test_send_get_passes_query_params(hass):
     assert captured["params"] == {"index": "2", "name": "Foo"}
 
 
+def test_parse_slots_reads_names_and_chars():
+    import pathlib
+
+    from custom_components.gbs_control.api import parse_slots
+
+    data = (pathlib.Path(__file__).parent / "fixtures" / "slots.bin").read_bytes()
+    slots = parse_slots(data)
+    assert len(slots) == 72  # SLOTS_TOTAL
+    assert slots[0] == {"index": 0, "char": "A", "name": "PS1"}
+    assert slots[1] == {"index": 1, "char": "B", "name": "PS2"}
+    assert slots[2]["name"] == "Empty"
+
+
 async def test_send_command_raises_on_error_status(hass):
     # A non-2xx device response must propagate (send_command calls raise_for_status).
     session = async_get_clientsession(hass)

@@ -109,6 +109,9 @@
     "select": {
       "output_resolution": {
         "name": "Ausgabeauflösung"
+      },
+      "preset_slot": {
+        "name": "Preset-Slot"
       }
     },
     "switch": {

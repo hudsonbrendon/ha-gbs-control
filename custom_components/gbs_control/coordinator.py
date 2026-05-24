@@ -28,6 +28,7 @@ class GBSControlCoordinator(DataUpdateCoordinator[dict]):
         self._stop_event = asyncio.Event()
         self._listen_task: asyncio.Task | None = None
         self._connected = False
+        self.slots: list[dict] = []
         self.data = {}
 
     @property
@@ -36,12 +37,16 @@ class GBSControlCoordinator(DataUpdateCoordinator[dict]):
         return self._connected
 
     async def async_start(self) -> None:
-        """Begin listening on the WebSocket."""
+        """Begin listening on the WebSocket and load saved slots (best-effort)."""
         self._stop_event.clear()
         self._listen_task = self.hass.async_create_background_task(
             self.api.listen(self._handle_frame, self._stop_event, self._handle_connection),
             name=f"{DOMAIN}_ws_{self.host}",
         )
+        try:
+            self.slots = await self.api.get_slots()
+        except Exception as err:  # noqa: BLE001 - slots are optional metadata
+            _LOGGER.debug("Could not load GBS Control slots: %s", err)
 
     async def async_stop(self) -> None:
         """Stop listening and tear down the task."""

@@ -2,11 +2,25 @@
 from __future__ import annotations
 
 from collections.abc import Iterator
+from unittest.mock import AsyncMock, patch
 
 import pycares
 import pytest
 
 pytest_plugins = "pytest_homeassistant_custom_component"
+
+
+@pytest.fixture(autouse=True)
+def _no_slot_fetch() -> Iterator[None]:
+    """Don't hit the network for slot metadata during tests by default.
+
+    Tests that exercise the slot select override this with their own patch.
+    """
+    with patch(
+        "custom_components.gbs_control.coordinator.GBSControlApiClient.get_slots",
+        new=AsyncMock(return_value=[]),
+    ):
+        yield
 
 
 @pytest.fixture(scope="session", autouse=True)

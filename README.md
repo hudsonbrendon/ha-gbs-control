@@ -53,14 +53,16 @@ is still unknown).
 | Match preset to source | Motion-adaptive deinterlace | ADC calibration |
 | Scaling RGBHV | External clock disabled | |
 
-### Select
+### Selects
 
 | Entity | Options |
 |--------|---------|
 | Output resolution | 1280x960 · 1280x720 · 720x480/768x576 · 1280x1024 · 1920x1080 · Downscale |
+| Preset slot | Your device's saved slot names (read from the device); switches the active slot |
 
 > The output-resolution select is write-mostly: its shown value reflects the last selection
-> made from Home Assistant, not a device readback.
+> made from Home Assistant, not a device readback. The preset-slot select only appears when
+> the device has named slots; its names are read at setup (reload to refresh after editing slots).
 
 ### Buttons
 

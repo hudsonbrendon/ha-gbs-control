@@ -109,6 +109,9 @@
     "select": {
       "output_resolution": {
         "name": "Résolution de sortie"
+      },
+      "preset_slot": {
+        "name": "Emplacement de préréglage"
       }
     },
     "switch": {

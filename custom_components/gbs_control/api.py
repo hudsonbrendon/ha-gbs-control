@@ -15,6 +15,10 @@ from .const import (
     FRAME_LEN,
     FRAME_MARKER,
     HTTP_PORT,
+    PATH_SLOTS_BIN,
+    SLOT_INDEX_MAP,
+    SLOT_NAME_LEN,
+    SLOT_RECORD_LEN,
     WS_PORT,
 )
 
@@ -44,6 +48,26 @@ def decode_status(frame: bytes) -> dict | None:
     for bit, key in FLAGS_BYTE5.items():
         state[key] = bool(frame[5] & (1 << bit))
     return state
+
+
+def parse_slots(data: bytes) -> list[dict]:
+    """Parse /bin/slots.bin into a list of {index, char, name}.
+
+    Each record is SLOT_RECORD_LEN bytes starting with a SLOT_NAME_LEN-byte
+    name; slot index i maps to identifier char SLOT_INDEX_MAP[i].
+    """
+    slots: list[dict] = []
+    count = min(len(SLOT_INDEX_MAP), len(data) // SLOT_RECORD_LEN)
+    for i in range(count):
+        record = data[i * SLOT_RECORD_LEN : (i + 1) * SLOT_RECORD_LEN]
+        name = (
+            record[:SLOT_NAME_LEN]
+            .split(b"\x00", 1)[0]
+            .decode("latin-1", "replace")
+            .strip()
+        )
+        slots.append({"index": i, "char": SLOT_INDEX_MAP[i], "name": name})
+    return slots
 
 
 # Single command char goes into the URL as a bare query-param name, e.g. /uc?7
@@ -88,6 +112,16 @@ class GBSControlApiClient:
             url, params=params, timeout=aiohttp.ClientTimeout(total=10)
         ) as resp:
             resp.raise_for_status()
+
+    async def get_slots(self) -> list[dict]:
+        """Fetch and parse the device's saved preset slots."""
+        url = f"{self.base_url}{PATH_SLOTS_BIN}"
+        async with self._session.get(
+            url, timeout=aiohttp.ClientTimeout(total=10)
+        ) as resp:
+            resp.raise_for_status()
+            data = await resp.read()
+        return parse_slots(data)
 
     async def async_check_connection(self) -> bool:
         """Return True if the device root responds 200."""

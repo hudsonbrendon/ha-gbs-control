@@ -11,7 +11,8 @@
       }
     },
     "select": {
-      "output_resolution": { "default": "mdi:monitor-screenshot" }
+      "output_resolution": { "default": "mdi:monitor-screenshot" },
+      "preset_slot": { "default": "mdi:format-list-bulleted" }
     },
     "switch": {
       "scanlines": { "default": "mdi:television-classic" },
