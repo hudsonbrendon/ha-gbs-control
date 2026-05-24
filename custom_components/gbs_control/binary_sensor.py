@@ -28,7 +28,6 @@ class GBSConnectivitySensor(GBSControlEntity, BinarySensorEntity):
     offline — reporting "off" (disconnected) is its entire purpose.
     """
 
-    _attr_name = "Connectivity"
     _attr_device_class = BinarySensorDeviceClass.CONNECTIVITY
     _attr_entity_category = EntityCategory.DIAGNOSTIC
 

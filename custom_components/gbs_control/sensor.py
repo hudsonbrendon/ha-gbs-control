@@ -23,7 +23,6 @@ async def async_setup_entry(
 
 
 class GBSPresetSensor(GBSControlEntity, SensorEntity):
-    _attr_name = "Output preset"
     _attr_icon = "mdi:television"
 
     @property
@@ -35,7 +34,6 @@ class GBSPresetSensor(GBSControlEntity, SensorEntity):
 
 
 class GBSSlotSensor(GBSControlEntity, SensorEntity):
-    _attr_name = "Active slot"
     _attr_icon = "mdi:memory"
 
     @property

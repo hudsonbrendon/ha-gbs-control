@@ -5,14 +5,18 @@
       "user": {
         "title": "GBS Control",
         "description": "Enter the hostname or IP of your GBS Control device.",
-        "data": { "host": "Host" }
+        "data": {
+          "host": "Host"
+        }
       },
       "zeroconf_confirm": {
         "title": "GBS Control",
         "description": "Do you want to add the GBS Control device at {name}?"
       }
     },
-    "error": { "cannot_connect": "Failed to connect to the device." },
+    "error": {
+      "cannot_connect": "Failed to connect to the device."
+    },
     "abort": {
       "already_configured": "This device is already configured.",
       "cannot_connect": "Failed to connect to the device."
@@ -35,6 +39,102 @@
           "name": "Endpoint",
           "description": "uc = user/web command, sc = low-level serial command."
         }
+      }
+    }
+  },
+  "entity": {
+    "sensor": {
+      "output_preset": {
+        "name": "Output preset"
+      },
+      "active_slot": {
+        "name": "Active slot"
+      }
+    },
+    "binary_sensor": {
+      "connectivity": {
+        "name": "Connectivity"
+      }
+    },
+    "select": {
+      "output_resolution": {
+        "name": "Output resolution"
+      }
+    },
+    "switch": {
+      "scanlines": {
+        "name": "Scanlines"
+      },
+      "line_filter": {
+        "name": "Line filter"
+      },
+      "frame_time_lock": {
+        "name": "Frame time lock"
+      },
+      "pal_force_60": {
+        "name": "Force PAL to 60Hz"
+      },
+      "tap6": {
+        "name": "6-tap filter"
+      },
+      "full_height": {
+        "name": "Full height"
+      },
+      "adc_calibration": {
+        "name": "ADC calibration"
+      },
+      "scaling_rgbhv": {
+        "name": "Scaling RGBHV"
+      },
+      "ext_clock_disabled": {
+        "name": "External clock disabled"
+      },
+      "peaking": {
+        "name": "Peaking"
+      },
+      "auto_gain": {
+        "name": "Auto gain"
+      },
+      "output_component": {
+        "name": "Component output"
+      },
+      "match_preset_source": {
+        "name": "Match preset to source"
+      },
+      "deinterlace": {
+        "name": "Motion-adaptive deinterlace"
+      }
+    },
+    "button": {
+      "reboot": {
+        "name": "Reboot"
+      },
+      "restore_defaults": {
+        "name": "Restore defaults"
+      },
+      "save_custom_preset": {
+        "name": "Save custom preset"
+      },
+      "load_custom_preset": {
+        "name": "Load custom preset"
+      },
+      "restore_filters": {
+        "name": "Restore filters"
+      },
+      "scanline_strength": {
+        "name": "Cycle scanline strength"
+      },
+      "sdram_clock": {
+        "name": "Cycle SDRAM clock"
+      },
+      "frame_time_lock_method": {
+        "name": "Cycle frame-time-lock method"
+      },
+      "vertical_mask_increase": {
+        "name": "Vertical mask increase"
+      },
+      "vertical_mask_decrease": {
+        "name": "Vertical mask decrease"
       }
     }
   }

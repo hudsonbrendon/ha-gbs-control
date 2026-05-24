@@ -65,38 +65,40 @@ RESOLUTION_COMMANDS = {
     "Downscale": "L",
 }
 
-# Switch definitions: key, friendly name, on_path, on_char, off_path, off_char.
+# Switch definitions: key, on_path, on_char, off_path, off_char.
 # For plain toggles on-char == off-char (the device flips current state).
+# Display names live in strings.json (entity.switch.<key>.name) for translation.
 SWITCHES = [
-    ("scanlines", "Scanlines", PATH_UC, "7", PATH_UC, "7"),
-    ("line_filter", "Line filter", PATH_UC, "m", PATH_UC, "m"),
-    ("frame_time_lock", "Frame time lock", PATH_UC, "5", PATH_UC, "5"),
-    ("pal_force_60", "Force PAL to 60Hz", PATH_UC, "0", PATH_UC, "0"),
-    ("tap6", "6-tap filter", PATH_UC, "t", PATH_UC, "t"),
-    ("full_height", "Full height", PATH_UC, "v", PATH_UC, "v"),
-    ("adc_calibration", "ADC calibration", PATH_UC, "w", PATH_UC, "w"),
-    ("scaling_rgbhv", "Scaling RGBHV", PATH_UC, "x", PATH_UC, "x"),
-    ("ext_clock_disabled", "External clock disabled", PATH_UC, "X", PATH_UC, "X"),
-    ("peaking", "Peaking", PATH_SC, "f", PATH_SC, "f"),
-    ("auto_gain", "Auto gain", PATH_SC, "T", PATH_SC, "T"),
-    ("output_component", "Component output", PATH_SC, "L", PATH_SC, "L"),
-    ("match_preset_source", "Match preset to source", PATH_SC, "Z", PATH_SC, "Z"),
+    ("scanlines", PATH_UC, "7", PATH_UC, "7"),
+    ("line_filter", PATH_UC, "m", PATH_UC, "m"),
+    ("frame_time_lock", PATH_UC, "5", PATH_UC, "5"),
+    ("pal_force_60", PATH_UC, "0", PATH_UC, "0"),
+    ("tap6", PATH_UC, "t", PATH_UC, "t"),
+    ("full_height", PATH_UC, "v", PATH_UC, "v"),
+    ("adc_calibration", PATH_UC, "w", PATH_UC, "w"),
+    ("scaling_rgbhv", PATH_UC, "x", PATH_UC, "x"),
+    ("ext_clock_disabled", PATH_UC, "X", PATH_UC, "X"),
+    ("peaking", PATH_SC, "f", PATH_SC, "f"),
+    ("auto_gain", PATH_SC, "T", PATH_SC, "T"),
+    ("output_component", PATH_SC, "L", PATH_SC, "L"),
+    ("match_preset_source", PATH_SC, "Z", PATH_SC, "Z"),
     # deinterlace uses distinct on/off commands (q = motion-adaptive on, r = bob off)
-    ("deinterlace", "Motion-adaptive deinterlace", PATH_UC, "q", PATH_UC, "r"),
+    ("deinterlace", PATH_UC, "q", PATH_UC, "r"),
 ]
 
-# Button definitions: key, friendly name, endpoint, char (None = path is a direct GET).
+# Button definitions: key, endpoint, char (None = path is a direct GET).
 # The adjustment buttons fire firmware step/cycle commands that have no readback,
 # so they are momentary actions rather than stateful entities.
+# Display names live in strings.json (entity.button.<key>.name) for translation.
 BUTTONS = [
-    ("reboot", "Reboot", PATH_UC, "a"),
-    ("restore_defaults", "Restore defaults", PATH_UC, "1"),
-    ("save_custom_preset", "Save custom preset", PATH_UC, "4"),
-    ("load_custom_preset", "Load custom preset", PATH_UC, "3"),
-    ("restore_filters", "Restore filters", PATH_RESTORE_FILTERS, None),
-    ("scanline_strength", "Cycle scanline strength", PATH_UC, "K"),
-    ("sdram_clock", "Cycle SDRAM clock", PATH_UC, "l"),
-    ("frame_time_lock_method", "Cycle frame-time-lock method", PATH_UC, "i"),
-    ("vertical_mask_increase", "Vertical mask increase", PATH_UC, "C"),
-    ("vertical_mask_decrease", "Vertical mask decrease", PATH_UC, "D"),
+    ("reboot", PATH_UC, "a"),
+    ("restore_defaults", PATH_UC, "1"),
+    ("save_custom_preset", PATH_UC, "4"),
+    ("load_custom_preset", PATH_UC, "3"),
+    ("restore_filters", PATH_RESTORE_FILTERS, None),
+    ("scanline_strength", PATH_UC, "K"),
+    ("sdram_clock", PATH_UC, "l"),
+    ("frame_time_lock_method", PATH_UC, "i"),
+    ("vertical_mask_increase", PATH_UC, "C"),
+    ("vertical_mask_decrease", PATH_UC, "D"),
 ]

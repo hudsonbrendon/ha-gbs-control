@@ -22,6 +22,8 @@ class GBSControlEntity(CoordinatorEntity[GBSControlCoordinator]):
         super().__init__(coordinator)
         self._key = key
         self._attr_unique_id = f"{coordinator.host}_{key}"
+        # Name comes from translations (entity.<platform>.<key>.name in strings.json).
+        self._attr_translation_key = key
         self._attr_device_info = DeviceInfo(
             identifiers={(DOMAIN, coordinator.host)},
             name=DEFAULT_NAME,

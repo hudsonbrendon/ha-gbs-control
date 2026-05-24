@@ -16,8 +16,8 @@ async def async_setup_entry(
 ) -> None:
     coordinator = hass.data[DOMAIN][entry.entry_id]
     async_add_entities(
-        GBSSwitch(coordinator, key, name, on_path, on_char, off_path, off_char)
-        for key, name, on_path, on_char, off_path, off_char in SWITCHES
+        GBSSwitch(coordinator, key, on_path, on_char, off_path, off_char)
+        for key, on_path, on_char, off_path, off_char in SWITCHES
     )
 
 
@@ -29,14 +29,12 @@ class GBSSwitch(GBSControlEntity, SwitchEntity):
         self,
         coordinator: GBSControlCoordinator,
         key: str,
-        name: str,
         on_path: str,
         on_char: str,
         off_path: str,
         off_char: str,
     ) -> None:
         super().__init__(coordinator, key)
-        self._attr_name = name
         self._on_path = on_path
         self._on_char = on_char
         self._off_path = off_path

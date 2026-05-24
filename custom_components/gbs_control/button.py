@@ -16,8 +16,7 @@ async def async_setup_entry(
 ) -> None:
     coordinator = hass.data[DOMAIN][entry.entry_id]
     async_add_entities(
-        GBSButton(coordinator, key, name, path, char)
-        for key, name, path, char in BUTTONS
+        GBSButton(coordinator, key, path, char) for key, path, char in BUTTONS
     )
 
 
@@ -26,12 +25,10 @@ class GBSButton(GBSControlEntity, ButtonEntity):
         self,
         coordinator: GBSControlCoordinator,
         key: str,
-        name: str,
         path: str,
         char: str | None,
     ) -> None:
         super().__init__(coordinator, key)
-        self._attr_name = name
         self._path = path
         self._char = char
 

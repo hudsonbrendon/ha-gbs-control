@@ -4,40 +4,40 @@
     "step": {
       "user": {
         "title": "GBS Control",
-        "description": "Informe o hostname ou IP do seu dispositivo GBS Control.",
+        "description": "Introduce el nombre de host o la IP de tu dispositivo GBS Control.",
         "data": {
           "host": "Host"
         }
       },
       "zeroconf_confirm": {
         "title": "GBS Control",
-        "description": "Deseja adicionar o dispositivo GBS Control em {name}?"
+        "description": "¿Quieres añadir el dispositivo GBS Control en {name}?"
       }
     },
     "error": {
-      "cannot_connect": "Falha ao conectar ao dispositivo."
+      "cannot_connect": "No se pudo conectar al dispositivo."
     },
     "abort": {
-      "already_configured": "Este dispositivo já está configurado.",
-      "cannot_connect": "Falha ao conectar ao dispositivo."
+      "already_configured": "Este dispositivo ya está configurado.",
+      "cannot_connect": "No se pudo conectar al dispositivo."
     }
   },
   "services": {
     "send_command": {
       "name": "Enviar comando",
-      "description": "Envia um comando bruto de um caractere para um dispositivo GBS Control.",
+      "description": "Envía un comando bruto de un solo carácter a un dispositivo GBS Control.",
       "fields": {
         "device_id": {
           "name": "Dispositivo",
-          "description": "O dispositivo GBS Control para onde enviar o comando."
+          "description": "El dispositivo GBS Control al que enviar el comando."
         },
         "command": {
           "name": "Comando",
-          "description": "Caractere único do comando, ex.: 7 (scanlines) ou f (peaking)."
+          "description": "Carácter único del comando, p. ej. 7 (líneas de escaneo) o f (realce)."
         },
         "path": {
           "name": "Endpoint",
-          "description": "uc = comando de usuário/web, sc = comando serial de baixo nível."
+          "description": "uc = comando de usuario/web, sc = comando serie de bajo nivel."
         }
       }
     }
@@ -45,64 +45,64 @@
   "entity": {
     "sensor": {
       "output_preset": {
-        "name": "Preset de saída"
+        "name": "Preajuste de salida"
       },
       "active_slot": {
-        "name": "Slot ativo"
+        "name": "Ranura activa"
       }
     },
     "binary_sensor": {
       "connectivity": {
-        "name": "Conectividade"
+        "name": "Conectividad"
       }
     },
     "select": {
       "output_resolution": {
-        "name": "Resolução de saída"
+        "name": "Resolución de salida"
       }
     },
     "switch": {
       "scanlines": {
-        "name": "Scanlines"
+        "name": "Líneas de escaneo"
       },
       "line_filter": {
-        "name": "Filtro de linha"
+        "name": "Filtro de líneas"
       },
       "frame_time_lock": {
-        "name": "Trava de tempo de quadro"
+        "name": "Bloqueo de tiempo de cuadro"
       },
       "pal_force_60": {
-        "name": "Forçar PAL para 60Hz"
+        "name": "Forzar PAL a 60Hz"
       },
       "tap6": {
-        "name": "Filtro de 6 taps"
+        "name": "Filtro de 6 tomas"
       },
       "full_height": {
-        "name": "Altura total"
+        "name": "Altura completa"
       },
       "adc_calibration": {
-        "name": "Calibração do ADC"
+        "name": "Calibración del ADC"
       },
       "scaling_rgbhv": {
-        "name": "Escalonamento RGBHV"
+        "name": "Escalado RGBHV"
       },
       "ext_clock_disabled": {
-        "name": "Clock externo desativado"
+        "name": "Reloj externo desactivado"
       },
       "peaking": {
-        "name": "Peaking"
+        "name": "Realce (peaking)"
       },
       "auto_gain": {
-        "name": "Ganho automático"
+        "name": "Ganancia automática"
       },
       "output_component": {
-        "name": "Saída por componente"
+        "name": "Salida por componentes"
       },
       "match_preset_source": {
-        "name": "Casar preset com a fonte"
+        "name": "Ajustar preajuste a la fuente"
       },
       "deinterlace": {
-        "name": "Desentrelaçamento adaptativo ao movimento"
+        "name": "Desentrelazado adaptativo al movimiento"
       }
     },
     "button": {
@@ -110,31 +110,31 @@
         "name": "Reiniciar"
       },
       "restore_defaults": {
-        "name": "Restaurar padrões"
+        "name": "Restaurar valores predeterminados"
       },
       "save_custom_preset": {
-        "name": "Salvar preset personalizado"
+        "name": "Guardar preajuste personalizado"
       },
       "load_custom_preset": {
-        "name": "Carregar preset personalizado"
+        "name": "Cargar preajuste personalizado"
       },
       "restore_filters": {
         "name": "Restaurar filtros"
       },
       "scanline_strength": {
-        "name": "Ciclar intensidade de scanline"
+        "name": "Ciclar intensidad de líneas de escaneo"
       },
       "sdram_clock": {
-        "name": "Ciclar clock SDRAM"
+        "name": "Ciclar reloj SDRAM"
       },
       "frame_time_lock_method": {
-        "name": "Ciclar método de trava de tempo"
+        "name": "Ciclar método de bloqueo de tiempo"
       },
       "vertical_mask_increase": {
         "name": "Aumentar máscara vertical"
       },
       "vertical_mask_decrease": {
-        "name": "Diminuir máscara vertical"
+        "name": "Disminuir máscara vertical"
       }
     }
   }
