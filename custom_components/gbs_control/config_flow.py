@@ -1,7 +1,7 @@
 """Config flow for GBS Control."""
 from __future__ import annotations
 
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Any
 
 from homeassistant.config_entries import ConfigFlow, ConfigFlowResult
 from homeassistant.helpers.aiohttp_client import async_get_clientsession
@@ -23,7 +23,9 @@ class GBSControlConfigFlow(ConfigFlow, domain=DOMAIN):
         self._discovered_host: str | None = None
         self._discovered_name: str | None = None
 
-    async def async_step_user(self, user_input=None) -> ConfigFlowResult:
+    async def async_step_user(
+        self, user_input: dict[str, Any] | None = None
+    ) -> ConfigFlowResult:
         errors: dict[str, str] = {}
         if user_input is not None:
             host = user_input["host"]
@@ -41,7 +43,9 @@ class GBSControlConfigFlow(ConfigFlow, domain=DOMAIN):
             errors=errors,
         )
 
-    async def async_step_reconfigure(self, user_input=None) -> ConfigFlowResult:
+    async def async_step_reconfigure(
+        self, user_input: dict[str, Any] | None = None
+    ) -> ConfigFlowResult:
         """Change the host/IP of an existing entry without removing it."""
         entry = self._get_reconfigure_entry()
         errors: dict[str, str] = {}
@@ -79,9 +83,11 @@ class GBSControlConfigFlow(ConfigFlow, domain=DOMAIN):
         return await self.async_step_zeroconf_confirm()
 
     async def async_step_zeroconf_confirm(
-        self, user_input=None
+        self, user_input: dict[str, Any] | None = None
     ) -> ConfigFlowResult:
         """Confirm adding a discovered device."""
+        assert self._discovered_host is not None  # set by async_step_zeroconf
+        assert self._discovered_name is not None
         if user_input is not None:
             client = GBSControlApiClient(
                 self._discovered_host, async_get_clientsession(self.hass)

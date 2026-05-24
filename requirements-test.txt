@@ -6,3 +6,4 @@ pytest-cov==6.0.0
 aioresponses==0.7.7
 zeroconf==0.136.2
 ruff==0.15.14
+mypy==2.1.0

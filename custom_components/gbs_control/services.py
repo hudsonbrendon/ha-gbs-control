@@ -36,7 +36,7 @@ def _coordinator_for_device(hass: HomeAssistant, device_id: str) -> GBSControlCo
         entry = hass.config_entries.async_get_entry(entry_id)
         if entry is not None and entry.domain == DOMAIN:
             coordinator = getattr(entry, "runtime_data", None)
-            if coordinator is not None:
+            if isinstance(coordinator, GBSControlCoordinator):
                 return coordinator
     raise ServiceValidationError(f"Device {device_id} is not a GBS Control device")
 

@@ -1,6 +1,8 @@
 """GBS Control switches."""
 from __future__ import annotations
 
+from typing import Any
+
 from homeassistant.components.switch import SwitchEntity
 from homeassistant.core import HomeAssistant
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
@@ -45,13 +47,13 @@ class GBSSwitch(GBSControlEntity, SwitchEntity):
     def is_on(self) -> bool | None:
         return self.coordinator.data.get(self._key)
 
-    async def async_turn_on(self, **kwargs) -> None:
+    async def async_turn_on(self, **kwargs: Any) -> None:
         # The device command is a blind toggle, so only act when we KNOW the
         # option is currently off. If state is unknown (None, before the first
         # WebSocket frame) we do nothing rather than risk inverting it.
         if self.is_on is False:
             await self.coordinator.api.send_command(self._on_path, self._on_char)
 
-    async def async_turn_off(self, **kwargs) -> None:
+    async def async_turn_off(self, **kwargs: Any) -> None:
         if self.is_on is True:
             await self.coordinator.api.send_command(self._off_path, self._off_char)
