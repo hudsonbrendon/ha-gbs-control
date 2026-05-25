@@ -95,7 +95,17 @@
   "entity": {
     "sensor": {
       "output_preset": {
-        "name": "Preajuste de salida"
+        "name": "Preajuste de salida",
+        "state": {
+          "preset_1": "Preajuste 1",
+          "preset_2": "Preajuste 2",
+          "preset_3": "Preajuste 3",
+          "preset_4": "Preajuste 4",
+          "preset_5": "Preajuste 5",
+          "preset_6": "Preajuste 6",
+          "bypass": "Bypass",
+          "custom": "Personalizado"
+        }
       },
       "active_slot": {
         "name": "Ranura activa"
@@ -189,6 +199,12 @@
       "vertical_mask_decrease": {
         "name": "Disminuir máscara vertical"
       }
+    }
+  },
+  "issues": {
+    "device_offline": {
+      "title": "Dispositivo GBS Control inaccesible",
+      "description": "Home Assistant no puede acceder al dispositivo GBS Control en {host}. Comprueba que esté encendido y conectado a tu red."
     }
   }
 }

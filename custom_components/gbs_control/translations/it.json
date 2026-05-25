@@ -95,7 +95,17 @@
   "entity": {
     "sensor": {
       "output_preset": {
-        "name": "Preset di uscita"
+        "name": "Preset di uscita",
+        "state": {
+          "preset_1": "Preset 1",
+          "preset_2": "Preset 2",
+          "preset_3": "Preset 3",
+          "preset_4": "Preset 4",
+          "preset_5": "Preset 5",
+          "preset_6": "Preset 6",
+          "bypass": "Bypass",
+          "custom": "Personalizzato"
+        }
       },
       "active_slot": {
         "name": "Slot attivo"
@@ -189,6 +199,12 @@
       "vertical_mask_decrease": {
         "name": "Diminuisci maschera verticale"
       }
+    }
+  },
+  "issues": {
+    "device_offline": {
+      "title": "Dispositivo GBS Control irraggiungibile",
+      "description": "Home Assistant non riesce a raggiungere il dispositivo GBS Control su {host}. Verifica che sia acceso e connesso alla rete."
     }
   }
 }

@@ -84,12 +84,14 @@ def async_setup_services(hass: HomeAssistant) -> None:
             "/slot/save",
             {"index": str(call.data[ATTR_INDEX]), "name": call.data[ATTR_NAME]},
         )
+        await coordinator.async_refresh_slots()
 
     async def handle_remove_slot(call: ServiceCall) -> None:
         # /slot/remove removes the CURRENTLY ACTIVE slot; a param name other than
         # '0' triggers the removal (the firmware reads getParam(0).name()).
         coordinator = _coordinator_for_device(hass, call.data[ATTR_DEVICE_ID])
         await coordinator.api.send_command("/slot/remove", "1")
+        await coordinator.async_refresh_slots()
 
     services = (
         (SERVICE_SEND_COMMAND, handle_send_command, SEND_COMMAND_SCHEMA),

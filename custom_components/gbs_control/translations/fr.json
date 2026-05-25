@@ -95,7 +95,17 @@
   "entity": {
     "sensor": {
       "output_preset": {
-        "name": "Préréglage de sortie"
+        "name": "Préréglage de sortie",
+        "state": {
+          "preset_1": "Préréglage 1",
+          "preset_2": "Préréglage 2",
+          "preset_3": "Préréglage 3",
+          "preset_4": "Préréglage 4",
+          "preset_5": "Préréglage 5",
+          "preset_6": "Préréglage 6",
+          "bypass": "Bypass",
+          "custom": "Personnalisé"
+        }
       },
       "active_slot": {
         "name": "Emplacement actif"
@@ -189,6 +199,12 @@
       "vertical_mask_decrease": {
         "name": "Diminuer le masque vertical"
       }
+    }
+  },
+  "issues": {
+    "device_offline": {
+      "title": "Appareil GBS Control injoignable",
+      "description": "Home Assistant ne peut pas joindre l'appareil GBS Control à {host}. Vérifiez qu'il est allumé et connecté à votre réseau."
     }
   }
 }

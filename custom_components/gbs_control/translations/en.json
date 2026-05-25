@@ -95,7 +95,17 @@
   "entity": {
     "sensor": {
       "output_preset": {
-        "name": "Output preset"
+        "name": "Output preset",
+        "state": {
+          "preset_1": "Preset 1",
+          "preset_2": "Preset 2",
+          "preset_3": "Preset 3",
+          "preset_4": "Preset 4",
+          "preset_5": "Preset 5",
+          "preset_6": "Preset 6",
+          "bypass": "Bypass",
+          "custom": "Custom"
+        }
       },
       "active_slot": {
         "name": "Active slot"
@@ -189,6 +199,12 @@
       "vertical_mask_decrease": {
         "name": "Vertical mask decrease"
       }
+    }
+  },
+  "issues": {
+    "device_offline": {
+      "title": "GBS Control device unreachable",
+      "description": "Home Assistant can't reach the GBS Control device at {host}. Check that it's powered on and connected to your network."
     }
   }
 }

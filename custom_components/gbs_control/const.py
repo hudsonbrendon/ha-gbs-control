@@ -37,18 +37,19 @@ FLAGS_BYTE5 = {
     2: "ext_clock_disabled",
 }
 
-# Output preset indicator (frame byte 1) -> human label.
-PRESET_LABELS = {
-    "0": "Unknown",
-    "1": "Preset 1",
-    "2": "Preset 2",
-    "3": "Preset 3",
-    "4": "Preset 4",
-    "5": "Preset 5",
-    "6": "Preset 6",
-    "8": "Bypass",
-    "9": "Custom",
+# Output preset indicator (frame byte 1) -> enum state key (translated in
+# strings.json under entity.sensor.output_preset.state). '0'/unknown -> None.
+PRESET_STATES = {
+    "1": "preset_1",
+    "2": "preset_2",
+    "3": "preset_3",
+    "4": "preset_4",
+    "5": "preset_5",
+    "6": "preset_6",
+    "8": "bypass",
+    "9": "custom",
 }
+PRESET_OPTIONS = list(PRESET_STATES.values())
 
 # Command endpoints.
 PATH_UC = "/uc"

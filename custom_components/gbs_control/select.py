@@ -49,27 +49,32 @@ class GBSSlotSelect(GBSControlEntity, SelectEntity):
 
     Options are the saved (non-empty) slot names read from /bin/slots.bin;
     current_option is derived from the active-slot byte in the status frame.
+    Read from coordinator.slots live so a slot refresh updates the options.
     """
 
-    def __init__(self, coordinator: GBSControlCoordinator, key: str) -> None:
-        super().__init__(coordinator, key)
-        self._name_to_char: dict[str, str] = {}
-        self._char_to_name: dict[str, str] = {}
-        for slot in coordinator.slots:
-            name = slot["name"]
-            if name and name != SLOT_EMPTY_NAME:
-                self._name_to_char[name] = slot["char"]
-                self._char_to_name[slot["char"]] = name
-        self._attr_options = list(self._name_to_char)
+    def _name_to_char(self) -> dict[str, str]:
+        return {
+            slot["name"]: slot["char"]
+            for slot in self.coordinator.slots
+            if slot["name"] and slot["name"] != SLOT_EMPTY_NAME
+        }
+
+    @property
+    def options(self) -> list[str]:
+        return list(self._name_to_char())
 
     @property
     def current_option(self) -> str | None:
         slot_byte = self.coordinator.data.get("slot")
         if slot_byte is None:
             return None
-        return self._char_to_name.get(chr(slot_byte))
+        char = chr(slot_byte)
+        for name, slot_char in self._name_to_char().items():
+            if slot_char == char:
+                return name
+        return None
 
     async def async_select_option(self, option: str) -> None:
-        char = self._name_to_char.get(option)
+        char = self._name_to_char().get(option)
         if char is not None:
             await self.coordinator.api.send_get(PATH_SLOT_SET, {"slot": char})
