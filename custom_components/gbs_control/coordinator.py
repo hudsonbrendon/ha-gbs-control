@@ -1,4 +1,5 @@
 """Push-style coordinator backed by the GBS Control WebSocket."""
+
 from __future__ import annotations
 
 import asyncio
@@ -11,8 +12,8 @@ from homeassistant.helpers.aiohttp_client import async_get_clientsession
 from homeassistant.helpers.event import async_call_later
 from homeassistant.helpers.update_coordinator import DataUpdateCoordinator
 
-from .api import GBSControlApiClient, decode_status
-from .const import DOMAIN
+from .api import GBSControlApiClient, TextLineAssembler, decode_status, parse_text_line
+from .const import DOMAIN, PATH_UC
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -35,6 +36,12 @@ class GBSControlCoordinator(DataUpdateCoordinator[dict]):
         self._connected = False
         self._offline_timer: CALLBACK_TYPE | None = None
         self.slots: list[dict] = []
+        self.wifi: dict = {}
+        # State decoded from the status frame (replaced on every frame) and from
+        # the serial-mirror text lines (accumulated); data = {**text, **status}.
+        self._status: dict = {}
+        self._text: dict = {}
+        self._lines = TextLineAssembler()
         self.data = {}
 
     @property
@@ -54,6 +61,21 @@ class GBSControlCoordinator(DataUpdateCoordinator[dict]):
             name=f"{DOMAIN}_ws_{self.host}",
         )
         await self.async_refresh_slots()
+
+    async def async_refresh_info(self) -> None:
+        """Fetch WiFi status and ask the device to print its options/colour
+        registers so the text-derived sensors get seeded (best-effort)."""
+        try:
+            self.wifi = await self.api.get_wifi_status()
+            # 'e' prints the user options (frame lock method, ...), 'O' the colour
+            # registers (brightness, contrast, Pb gain). Both are web-UI buttons.
+            await self.api.send_command(PATH_UC, "e")
+            await asyncio.sleep(0.5)  # let the ESP flush before the next print burst
+            await self.api.send_command(PATH_UC, "O")
+        except Exception as err:  # noqa: BLE001 - info is optional metadata
+            _LOGGER.debug("Could not refresh GBS Control info: %s", err)
+            return
+        self.async_update_listeners()
 
     async def async_refresh_slots(self) -> None:
         """(Re)load the device's saved slots; updates dependent entities."""
@@ -88,11 +110,23 @@ class GBSControlCoordinator(DataUpdateCoordinator[dict]):
 
     @callback
     def _handle_frame(self, raw: bytes) -> None:
-        """Decode one WebSocket frame; ignore non-status frames."""
+        """Decode one WebSocket frame: a status frame replaces the status state;
+        anything else is serial-mirror text, parsed line by line."""
         state = decode_status(raw)
-        if state is None:
+        if state is not None:
+            # Preset byte '0' = no preset loaded = no source detected (the
+            # firmware resets presetID when it goes back to input scanning).
+            state["signal"] = state["preset"] != "0"
+            self._status = state
+            self.async_set_updated_data({**self._text, **self._status})
             return
-        self.async_set_updated_data(state)
+        changed = False
+        for line in self._lines.feed(raw.decode("latin-1", "replace")):
+            if parsed := parse_text_line(line):
+                self._text.update(parsed)
+                changed = True
+        if changed:
+            self.async_set_updated_data({**self._text, **self._status})
 
     @callback
     def _handle_connection(self, connected: bool) -> None:
@@ -108,6 +142,7 @@ class GBSControlCoordinator(DataUpdateCoordinator[dict]):
                 self._offline_timer()
                 self._offline_timer = None
             ir.async_delete_issue(self.hass, DOMAIN, self._issue_id)
+            self.hass.async_create_task(self.async_refresh_info())
         elif self._offline_timer is None:
             # Went offline: raise a repair issue only if it stays down a while.
             self._offline_timer = async_call_later(

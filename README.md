@@ -11,7 +11,8 @@ Control and monitor a [GBS Control](https://github.com/ramapcsx2/gbs-control) vi
 upscaler (GBS-8200 / GBS-8220 running the ESP firmware) from Home Assistant.
 
 State is read live from the device WebSocket and commands are sent over HTTP — no
-cloud, fully local.
+cloud, fully local. Everything below was verified against the gbs-control firmware
+source and a live device (see *How it works*).
 
 ## Installation (HACS)
 
@@ -35,8 +36,13 @@ You can later change the host without removing the integration via **Configure**
 
 | Entity | Platform | Description |
 |--------|----------|-------------|
-| Output preset | `sensor` | Current output preset / resolution indicator |
+| Output preset | `sensor` | Loaded output preset (1280x960 … Pass-through / Custom); attributes carry the real resolution of a custom preset |
+| Input format | `sensor` | Detected source: NTSC 480i, PAL 576i, 480p/576p, 720p, 1080i/p, VGA, RGBHV … |
 | Active slot | `sensor` | Currently active preset slot |
+| Source field rate / Output frame rate | `sensor` | Hz, printed by the firmware when frame-time lock runs |
+| Brightness, Contrast, Pb/U gain, Pr/V gain, ADC gain, Scanline strength | `sensor` | Register values, updated whenever the device prints them (seeded at connect) |
+| Frame-time-lock method, Wi-Fi network, IP address | `sensor` (diagnostic) | Device settings read from the firmware output and `/wifi/status` |
+| Signal | `binary_sensor` | Whether a video source is detected |
 | Connectivity | `binary_sensor` | Whether the device WebSocket is connected (stays available when offline) |
 
 ### Switches
@@ -51,28 +57,32 @@ is still unknown).
 | Auto gain | Frame time lock | Force PAL to 60Hz |
 | 6-tap filter | Full height | Component output |
 | Match preset to source | Motion-adaptive deinterlace | ADC calibration |
-| Scaling RGBHV | External clock disabled | |
+| Scaling RGBHV | External clock disabled | Step response |
 
 ### Selects
 
 | Entity | Options |
 |--------|---------|
-| Output resolution | 1280x960 · 1280x720 · 720x480/768x576 · 1280x1024 · 1920x1080 · Downscale |
+| Output resolution | 1280x960 · 1280x720 · 720x480/768x576 · 1280x1024 · 1920x1080 · Downscale · Pass-through |
 | Preset slot | Your device's saved slot names (read from the device); switches the active slot |
 
-> The output-resolution select is write-mostly: its shown value reflects the last selection
-> made from Home Assistant, not a device readback. The preset-slot select only appears when
-> the device has named slots; its names are read at setup (reload to refresh after editing slots).
+> The output-resolution select reads back from the device status frame (and from the
+> firmware's "preset applied" message for custom presets). The preset-slot select only
+> appears when the device has named slots; its names are read at setup (use the
+> `gbs_control.refresh` action after editing slots).
 
 ### Buttons
 
-| Button | Button |
-|--------|--------|
-| Reboot | Restore defaults |
-| Save custom preset | Load custom preset |
-| Restore filters | Cycle scanline strength |
-| Cycle SDRAM clock | Cycle frame-time-lock method |
-| Vertical mask increase | Vertical mask decrease |
+Every momentary command of the web UI is a button. Picture and geometry buttons are
+enabled by default; developer-tab toggles without readback are disabled by default
+(enable them from the entity settings).
+
+| Group | Buttons |
+|-------|---------|
+| System | Reboot · Restore defaults · Save/Load custom preset · Restore filters · Print options · Reconnect Wi-Fi · Enable OTA updates |
+| Picture | Brightness ± · Contrast ± · Pb/U gain ± · Pr/V gain ± · Reset colour defaults · Print colour registers · ADC gain ± · Cycle scanline strength · Cycle SDRAM clock · Cycle frame-time-lock method |
+| Geometry | Shift picture left/right/up/down · Scale horizontal ± · Scale vertical ± · Horizontal/Vertical mask ± · Memory shift · HSync shift |
+| Sync / developer | HTotal ± · Resync HTotal · Snap to 60/50Hz · Reset sync processor · Reset chip · Cycle oversampling · Invert sync · PLL divider · SOG level · Print video timings · Toggle freeze capture / ADC filter / IF auto offset / debug view / sync watcher |
 
 ## Services
 
@@ -91,6 +101,11 @@ data:
   command: "7"   # toggle scanlines
   path: uc
 ```
+
+### `gbs_control.refresh`
+
+Reloads the saved slots and asks the device to print its options and colour registers
+(re-seeds the readback sensors). Takes only `device_id`.
 
 ### `gbs_control.set_slot` / `save_slot` / `remove_slot`
 
@@ -124,17 +139,26 @@ UI text (config flow, services, entity names) is translated to:
 
 ## How it works
 
-The device has no JSON API. State is read from a 6-byte status frame pushed on the device
-WebSocket (port 81); commands are HTTP GET requests (`/uc?<char>`, `/sc?<char>`, `/slot/*`)
-on port 80. The integration keeps a single persistent WebSocket connection and reconnects
-automatically (the ESP8266 drops clients when its heap runs low).
+The device has almost no JSON API. State comes from two things pushed on the device
+WebSocket (port 81): a 6-byte status frame about once a second (preset, slot, option
+flags) and the firmware's serial output, which is mirrored to the WebSocket one fragment
+per `print()` call. The integration reassembles those fragments into lines and parses the
+ones it knows (`preset applied: …`, `Format change: …`, `no signal`, `source Hz: …`,
+`Brightness++ : …`, the option/colour-register dumps, …). Commands are HTTP GET requests
+(`/uc?<char>`, `/sc?<char>`, `/slot/*`) on port 80; `/wifi/status` and `/spiffs/dir` are the
+only JSON endpoints. The integration keeps a single persistent WebSocket connection and
+reconnects automatically (the ESP8266 drops *all* clients when its free heap drops below
+20 KB).
 
 ## Caveats
 
 - The ESP8266 prefers a single WebSocket client; keep one Home Assistant instance connected.
 - The brand icon renders on **Home Assistant 2026.3+** (local custom-integration brands);
   older versions show a generic icon.
-- The output-resolution select is write-mostly (see above).
+- The firmware's "Print Info" developer stream (`/sc?i`) is deliberately not exposed: it
+  floods the WebSocket until the ESP8266 runs out of heap and disconnects every client.
+- Brightness/contrast/gain sensors only update when the device prints them (step buttons,
+  "Print colour registers", or at connect), not continuously.
 
 ## Credits
 

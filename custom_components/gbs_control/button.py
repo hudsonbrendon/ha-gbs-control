@@ -1,7 +1,9 @@
 """GBS Control buttons."""
+
 from __future__ import annotations
 
 from homeassistant.components.button import ButtonEntity
+from homeassistant.const import EntityCategory
 from homeassistant.core import HomeAssistant
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
 
@@ -17,7 +19,8 @@ async def async_setup_entry(
 ) -> None:
     coordinator = entry.runtime_data
     async_add_entities(
-        GBSButton(coordinator, key, path, char) for key, path, char in BUTTONS
+        GBSButton(coordinator, key, path, char, category, enabled)
+        for key, path, char, category, enabled in BUTTONS
     )
 
 
@@ -28,10 +31,14 @@ class GBSButton(GBSControlEntity, ButtonEntity):
         key: str,
         path: str,
         char: str | None,
+        category: str | None,
+        enabled: bool,
     ) -> None:
         super().__init__(coordinator, key)
         self._path = path
         self._char = char
+        self._attr_entity_category = EntityCategory(category) if category else None
+        self._attr_entity_registry_enabled_default = enabled
 
     async def async_press(self) -> None:
         if self._char is None:

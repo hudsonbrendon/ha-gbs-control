@@ -90,6 +90,16 @@
           "description": "The GBS Control device to send the command to."
         }
       }
+    },
+    "refresh": {
+      "name": "Refresh",
+      "description": "Reload the saved slots and ask the device to print its options and colour registers.",
+      "fields": {
+        "device_id": {
+          "name": "Device",
+          "description": "The GBS Control device to refresh."
+        }
+      }
     }
   },
   "entity": {
@@ -97,23 +107,80 @@
       "output_preset": {
         "name": "Output preset",
         "state": {
-          "preset_1": "Preset 1",
-          "preset_2": "Preset 2",
-          "preset_3": "Preset 3",
-          "preset_4": "Preset 4",
-          "preset_5": "Preset 5",
-          "preset_6": "Preset 6",
-          "bypass": "Bypass",
+          "preset_1": "1280x960",
+          "preset_2": "1280x1024",
+          "preset_3": "1280x720",
+          "preset_4": "720x480 / 768x576",
+          "preset_5": "1920x1080",
+          "preset_6": "Downscale",
+          "bypass": "Pass-through",
           "custom": "Custom"
         }
       },
       "active_slot": {
         "name": "Active slot"
+      },
+      "input_format": {
+        "name": "Input format",
+        "state": {
+          "none": "No signal",
+          "ntsc_480i": "NTSC 480i (60Hz)",
+          "pal_576i": "PAL 576i (50Hz)",
+          "edtv_480p": "EDTV 480p (60Hz)",
+          "edtv_576p": "EDTV 576p (50Hz)",
+          "hdtv_720p": "HDTV 720p",
+          "hdtv_1080i": "HDTV 1080i",
+          "hdtv_1080p": "HDTV 1080p",
+          "medium_res": "Medium resolution",
+          "vga_graphic": "VGA/SVGA/XGA/SXGA",
+          "rgbhv_scaling": "RGBHV (scaling)",
+          "rgbhv_bypass": "RGBHV (bypass)"
+        }
+      },
+      "source_hz": {
+        "name": "Source field rate"
+      },
+      "output_hz": {
+        "name": "Output frame rate"
+      },
+      "frame_time_lock_method": {
+        "name": "Frame-time-lock method",
+        "state": {
+          "vtotal_vsst": "0 (vtotal + VSST)",
+          "vtotal_only": "1 (vtotal only)"
+        }
+      },
+      "wifi_ssid": {
+        "name": "Wi-Fi network"
+      },
+      "ip_address": {
+        "name": "IP address"
+      },
+      "brightness": {
+        "name": "Brightness"
+      },
+      "contrast": {
+        "name": "Contrast"
+      },
+      "pb_gain": {
+        "name": "Pb/U gain"
+      },
+      "pr_gain": {
+        "name": "Pr/V gain"
+      },
+      "adc_gain": {
+        "name": "ADC gain"
+      },
+      "scanline_strength": {
+        "name": "Scanline strength"
       }
     },
     "binary_sensor": {
       "connectivity": {
         "name": "Connectivity"
+      },
+      "signal": {
+        "name": "Signal"
       }
     },
     "select": {
@@ -166,6 +233,9 @@
       },
       "deinterlace": {
         "name": "Motion-adaptive deinterlace"
+      },
+      "step_response": {
+        "name": "Step response"
       }
     },
     "button": {
@@ -198,6 +268,141 @@
       },
       "vertical_mask_decrease": {
         "name": "Vertical mask decrease"
+      },
+      "list_options": {
+        "name": "Print options"
+      },
+      "wifi_reconnect": {
+        "name": "Reconnect Wi-Fi"
+      },
+      "enable_ota": {
+        "name": "Enable OTA updates"
+      },
+      "brightness_increase": {
+        "name": "Brightness increase"
+      },
+      "brightness_decrease": {
+        "name": "Brightness decrease"
+      },
+      "contrast_increase": {
+        "name": "Contrast increase"
+      },
+      "contrast_decrease": {
+        "name": "Contrast decrease"
+      },
+      "pb_gain_increase": {
+        "name": "Pb/U gain increase"
+      },
+      "pb_gain_decrease": {
+        "name": "Pb/U gain decrease"
+      },
+      "pr_gain_increase": {
+        "name": "Pr/V gain increase"
+      },
+      "pr_gain_decrease": {
+        "name": "Pr/V gain decrease"
+      },
+      "color_defaults": {
+        "name": "Reset colour defaults"
+      },
+      "color_info": {
+        "name": "Print colour registers"
+      },
+      "adc_gain_increase": {
+        "name": "ADC gain increase"
+      },
+      "adc_gain_decrease": {
+        "name": "ADC gain decrease"
+      },
+      "horizontal_mask_increase": {
+        "name": "Horizontal mask increase"
+      },
+      "horizontal_mask_decrease": {
+        "name": "Horizontal mask decrease"
+      },
+      "shift_left": {
+        "name": "Shift picture left"
+      },
+      "shift_right": {
+        "name": "Shift picture right"
+      },
+      "shift_up": {
+        "name": "Shift picture up"
+      },
+      "shift_down": {
+        "name": "Shift picture down"
+      },
+      "scale_horizontal_increase": {
+        "name": "Scale horizontal increase"
+      },
+      "scale_horizontal_decrease": {
+        "name": "Scale horizontal decrease"
+      },
+      "scale_vertical_increase": {
+        "name": "Scale vertical increase"
+      },
+      "scale_vertical_decrease": {
+        "name": "Scale vertical decrease"
+      },
+      "memory_left": {
+        "name": "Memory shift left"
+      },
+      "memory_right": {
+        "name": "Memory shift right"
+      },
+      "hsync_left": {
+        "name": "HSync shift left"
+      },
+      "hsync_right": {
+        "name": "HSync shift right"
+      },
+      "htotal_increase": {
+        "name": "HTotal increase"
+      },
+      "htotal_decrease": {
+        "name": "HTotal decrease"
+      },
+      "resync_htotal": {
+        "name": "Resync HTotal"
+      },
+      "snap_frame_rate": {
+        "name": "Snap to 60/50Hz"
+      },
+      "reset_sync_processor": {
+        "name": "Reset sync processor"
+      },
+      "reset_chip": {
+        "name": "Reset chip"
+      },
+      "oversampling": {
+        "name": "Cycle oversampling"
+      },
+      "invert_sync": {
+        "name": "Invert sync"
+      },
+      "pll_divider_increase": {
+        "name": "PLL divider increase"
+      },
+      "sog_level_decrease": {
+        "name": "SOG level decrease"
+      },
+      "video_timings": {
+        "name": "Print video timings"
+      },
+      "freeze_capture": {
+        "name": "Toggle freeze capture"
+      },
+      "adc_filter": {
+        "name": "Toggle ADC filter"
+      },
+      "if_auto_offset": {
+        "name": "Toggle IF auto offset"
+      },
+      "debug_view": {
+        "name": "Toggle debug view"
+      },
+      "sync_watcher": {
+        "name": "Toggle sync watcher"
       }
     }
   },
