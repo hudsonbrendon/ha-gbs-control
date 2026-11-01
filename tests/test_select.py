@@ -1,4 +1,5 @@
 """Tests for the GBS Control resolution select."""
+
 from unittest.mock import AsyncMock, patch
 
 from pytest_homeassistant_custom_component.common import MockConfigEntry
@@ -7,7 +8,9 @@ from custom_components.gbs_control.const import DOMAIN, RESOLUTION_COMMANDS
 
 
 async def test_select_options_and_command(hass):
-    entry = MockConfigEntry(domain=DOMAIN, data={"host": "gbscontrol.local"}, unique_id="gbscontrol.local")
+    entry = MockConfigEntry(
+        domain=DOMAIN, data={"host": "gbscontrol.local"}, unique_id="gbscontrol.local"
+    )
     entry.add_to_hass(hass)
     assert await hass.config_entries.async_setup(entry.entry_id)
     await hass.async_block_till_done()
@@ -28,8 +31,26 @@ async def test_select_options_and_command(hass):
         )
         send.assert_awaited_once_with("/uc", "s")
 
-    state = hass.states.get("select.gbs_control_output_resolution")
-    assert state.state == "1920x1080"
+    # Readback: status-frame preset byte '5' = 1920x1080; '9' (custom) uses the
+    # resolution parsed from the "preset applied:" line; '0' = nothing loaded.
+    coordinator.async_set_updated_data({"preset": "5"})
+    await hass.async_block_till_done()
+    assert hass.states.get("select.gbs_control_output_resolution").state == "1920x1080"
+    coordinator.async_set_updated_data({"preset": "9", "output_resolution": "1280x720"})
+    await hass.async_block_till_done()
+    assert hass.states.get("select.gbs_control_output_resolution").state == "1280x720"
+    coordinator.async_set_updated_data({"preset": "0"})
+    await hass.async_block_till_done()
+    assert hass.states.get("select.gbs_control_output_resolution").state == "unknown"
+
+    with patch.object(coordinator.api, "send_command", new=AsyncMock()) as send:
+        await hass.services.async_call(
+            "select",
+            "select_option",
+            {"entity_id": "select.gbs_control_output_resolution", "option": "Pass-through"},
+            blocking=True,
+        )
+        send.assert_awaited_once_with("/sc", "K")
 
 
 async def test_slot_select_from_named_slots(hass):
@@ -37,9 +58,7 @@ async def test_slot_select_from_named_slots(hass):
 
     from custom_components.gbs_control.api import parse_slots
 
-    slots = parse_slots(
-        (pathlib.Path(__file__).parent / "fixtures" / "slots.bin").read_bytes()
-    )
+    slots = parse_slots((pathlib.Path(__file__).parent / "fixtures" / "slots.bin").read_bytes())
 
     entry = MockConfigEntry(
         domain=DOMAIN, data={"host": "gbscontrol.local"}, unique_id="gbscontrol.local"

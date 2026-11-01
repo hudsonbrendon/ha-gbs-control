@@ -1,49 +1,292 @@
 {
   "entity": {
     "sensor": {
-      "output_preset": { "default": "mdi:television" },
-      "active_slot": { "default": "mdi:memory" }
+      "output_preset": {
+        "default": "mdi:television"
+      },
+      "active_slot": {
+        "default": "mdi:memory"
+      },
+      "input_format": {
+        "default": "mdi:video-input-component"
+      },
+      "source_hz": {
+        "default": "mdi:sine-wave"
+      },
+      "output_hz": {
+        "default": "mdi:sine-wave"
+      },
+      "frame_time_lock_method": {
+        "default": "mdi:lock-clock"
+      },
+      "wifi_ssid": {
+        "default": "mdi:wifi"
+      },
+      "ip_address": {
+        "default": "mdi:ip-network"
+      },
+      "brightness": {
+        "default": "mdi:brightness-6"
+      },
+      "contrast": {
+        "default": "mdi:contrast-box"
+      },
+      "pb_gain": {
+        "default": "mdi:palette"
+      },
+      "pr_gain": {
+        "default": "mdi:palette"
+      },
+      "adc_gain": {
+        "default": "mdi:signal"
+      },
+      "scanline_strength": {
+        "default": "mdi:format-line-weight"
+      }
     },
     "binary_sensor": {
       "connectivity": {
         "default": "mdi:lan-connect",
-        "state": { "off": "mdi:lan-disconnect" }
+        "state": {
+          "off": "mdi:lan-disconnect"
+        }
+      },
+      "signal": {
+        "default": "mdi:video-check",
+        "state": {
+          "off": "mdi:video-off"
+        }
       }
     },
     "select": {
-      "output_resolution": { "default": "mdi:monitor-screenshot" },
-      "preset_slot": { "default": "mdi:format-list-bulleted" }
+      "output_resolution": {
+        "default": "mdi:monitor-screenshot"
+      },
+      "preset_slot": {
+        "default": "mdi:format-list-bulleted"
+      }
     },
     "switch": {
-      "scanlines": { "default": "mdi:television-classic" },
-      "line_filter": { "default": "mdi:filter" },
-      "frame_time_lock": { "default": "mdi:lock-clock" },
-      "pal_force_60": { "default": "mdi:sync" },
-      "tap6": { "default": "mdi:filter-variant" },
-      "full_height": { "default": "mdi:arrow-expand-vertical" },
-      "adc_calibration": { "default": "mdi:tune" },
-      "scaling_rgbhv": { "default": "mdi:resize" },
-      "ext_clock_disabled": { "default": "mdi:clock-remove" },
-      "peaking": { "default": "mdi:image-filter-center-focus" },
-      "auto_gain": { "default": "mdi:brightness-auto" },
-      "output_component": { "default": "mdi:video-input-component" },
-      "match_preset_source": { "default": "mdi:link-variant" },
-      "deinterlace": { "default": "mdi:blur" }
+      "scanlines": {
+        "default": "mdi:television-classic"
+      },
+      "line_filter": {
+        "default": "mdi:filter"
+      },
+      "frame_time_lock": {
+        "default": "mdi:lock-clock"
+      },
+      "pal_force_60": {
+        "default": "mdi:sync"
+      },
+      "tap6": {
+        "default": "mdi:filter-variant"
+      },
+      "full_height": {
+        "default": "mdi:arrow-expand-vertical"
+      },
+      "adc_calibration": {
+        "default": "mdi:tune"
+      },
+      "scaling_rgbhv": {
+        "default": "mdi:resize"
+      },
+      "ext_clock_disabled": {
+        "default": "mdi:clock-remove"
+      },
+      "peaking": {
+        "default": "mdi:image-filter-center-focus"
+      },
+      "auto_gain": {
+        "default": "mdi:brightness-auto"
+      },
+      "output_component": {
+        "default": "mdi:video-input-component"
+      },
+      "match_preset_source": {
+        "default": "mdi:link-variant"
+      },
+      "deinterlace": {
+        "default": "mdi:blur"
+      },
+      "step_response": {
+        "default": "mdi:chart-timeline-variant"
+      }
     },
     "button": {
-      "reboot": { "default": "mdi:restart" },
-      "restore_defaults": { "default": "mdi:backup-restore" },
-      "save_custom_preset": { "default": "mdi:content-save" },
-      "load_custom_preset": { "default": "mdi:download" },
-      "restore_filters": { "default": "mdi:filter-cog" },
-      "scanline_strength": { "default": "mdi:format-line-weight" },
-      "sdram_clock": { "default": "mdi:memory" },
-      "frame_time_lock_method": { "default": "mdi:lock-clock" },
-      "vertical_mask_increase": { "default": "mdi:arrow-expand-vertical" },
-      "vertical_mask_decrease": { "default": "mdi:arrow-collapse-vertical" }
+      "reboot": {
+        "default": "mdi:restart"
+      },
+      "restore_defaults": {
+        "default": "mdi:backup-restore"
+      },
+      "save_custom_preset": {
+        "default": "mdi:content-save"
+      },
+      "load_custom_preset": {
+        "default": "mdi:download"
+      },
+      "restore_filters": {
+        "default": "mdi:filter-cog"
+      },
+      "scanline_strength": {
+        "default": "mdi:format-line-weight"
+      },
+      "sdram_clock": {
+        "default": "mdi:memory"
+      },
+      "frame_time_lock_method": {
+        "default": "mdi:lock-clock"
+      },
+      "vertical_mask_increase": {
+        "default": "mdi:arrow-expand-vertical"
+      },
+      "vertical_mask_decrease": {
+        "default": "mdi:arrow-collapse-vertical"
+      },
+      "list_options": {
+        "default": "mdi:format-list-bulleted"
+      },
+      "wifi_reconnect": {
+        "default": "mdi:wifi-refresh"
+      },
+      "enable_ota": {
+        "default": "mdi:update"
+      },
+      "brightness_increase": {
+        "default": "mdi:brightness-7"
+      },
+      "brightness_decrease": {
+        "default": "mdi:brightness-5"
+      },
+      "contrast_increase": {
+        "default": "mdi:contrast-circle"
+      },
+      "contrast_decrease": {
+        "default": "mdi:contrast-circle"
+      },
+      "pb_gain_increase": {
+        "default": "mdi:plus-circle-outline"
+      },
+      "pb_gain_decrease": {
+        "default": "mdi:minus-circle-outline"
+      },
+      "pr_gain_increase": {
+        "default": "mdi:plus-circle-outline"
+      },
+      "pr_gain_decrease": {
+        "default": "mdi:minus-circle-outline"
+      },
+      "color_defaults": {
+        "default": "mdi:palette-outline"
+      },
+      "color_info": {
+        "default": "mdi:information-outline"
+      },
+      "adc_gain_increase": {
+        "default": "mdi:signal-cellular-3"
+      },
+      "adc_gain_decrease": {
+        "default": "mdi:signal-cellular-1"
+      },
+      "horizontal_mask_increase": {
+        "default": "mdi:arrow-expand-horizontal"
+      },
+      "horizontal_mask_decrease": {
+        "default": "mdi:arrow-collapse-horizontal"
+      },
+      "shift_left": {
+        "default": "mdi:arrow-left"
+      },
+      "shift_right": {
+        "default": "mdi:arrow-right"
+      },
+      "shift_up": {
+        "default": "mdi:arrow-up"
+      },
+      "shift_down": {
+        "default": "mdi:arrow-down"
+      },
+      "scale_horizontal_increase": {
+        "default": "mdi:arrow-expand-horizontal"
+      },
+      "scale_horizontal_decrease": {
+        "default": "mdi:arrow-collapse-horizontal"
+      },
+      "scale_vertical_increase": {
+        "default": "mdi:arrow-expand-vertical"
+      },
+      "scale_vertical_decrease": {
+        "default": "mdi:arrow-collapse-vertical"
+      },
+      "memory_left": {
+        "default": "mdi:arrow-left-bold-box-outline"
+      },
+      "memory_right": {
+        "default": "mdi:arrow-right-bold-box-outline"
+      },
+      "hsync_left": {
+        "default": "mdi:arrow-left-bold-outline"
+      },
+      "hsync_right": {
+        "default": "mdi:arrow-right-bold-outline"
+      },
+      "htotal_increase": {
+        "default": "mdi:plus-box-outline"
+      },
+      "htotal_decrease": {
+        "default": "mdi:minus-box-outline"
+      },
+      "resync_htotal": {
+        "default": "mdi:sync-alert"
+      },
+      "snap_frame_rate": {
+        "default": "mdi:hdmi-port"
+      },
+      "reset_sync_processor": {
+        "default": "mdi:restore"
+      },
+      "reset_chip": {
+        "default": "mdi:chip"
+      },
+      "oversampling": {
+        "default": "mdi:chart-bell-curve"
+      },
+      "invert_sync": {
+        "default": "mdi:invert-colors"
+      },
+      "pll_divider_increase": {
+        "default": "mdi:calculator"
+      },
+      "sog_level_decrease": {
+        "default": "mdi:format-align-justify"
+      },
+      "video_timings": {
+        "default": "mdi:timer-outline"
+      },
+      "freeze_capture": {
+        "default": "mdi:camera"
+      },
+      "adc_filter": {
+        "default": "mdi:white-balance-sunny"
+      },
+      "if_auto_offset": {
+        "default": "mdi:bug-outline"
+      },
+      "debug_view": {
+        "default": "mdi:bug"
+      },
+      "sync_watcher": {
+        "default": "mdi:devices"
+      }
     }
   },
   "services": {
-    "send_command": { "service": "mdi:console-line" }
+    "send_command": {
+      "service": "mdi:console-line"
+    },
+    "refresh": {
+      "service": "mdi:refresh"
+    }
   }
 }

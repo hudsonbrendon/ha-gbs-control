@@ -56,3 +56,10 @@ remove_slot:
       selector:
         device:
           integration: gbs_control
+refresh:
+  fields:
+    device_id:
+      required: true
+      selector:
+        device:
+          integration: gbs_control

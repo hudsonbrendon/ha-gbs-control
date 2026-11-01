@@ -1,4 +1,5 @@
-"""GBS Control connectivity binary sensor."""
+"""GBS Control binary sensors."""
+
 from __future__ import annotations
 
 from homeassistant.components.binary_sensor import (
@@ -19,7 +20,12 @@ async def async_setup_entry(
     hass: HomeAssistant, entry: GBSConfigEntry, async_add_entities: AddEntitiesCallback
 ) -> None:
     coordinator = entry.runtime_data
-    async_add_entities([GBSConnectivitySensor(coordinator, "connectivity")])
+    async_add_entities(
+        [
+            GBSConnectivitySensor(coordinator, "connectivity"),
+            GBSSignalSensor(coordinator, "signal"),
+        ]
+    )
 
 
 class GBSConnectivitySensor(GBSControlEntity, BinarySensorEntity):
@@ -39,3 +45,12 @@ class GBSConnectivitySensor(GBSControlEntity, BinarySensorEntity):
     @property
     def is_on(self) -> bool:
         return self.coordinator.connected
+
+
+class GBSSignalSensor(GBSControlEntity, BinarySensorEntity):
+    """Whether a video source is detected (status-frame preset byte != '0',
+    refined by the firmware's "no signal" / "Format change" messages)."""
+
+    @property
+    def is_on(self) -> bool | None:
+        return self.coordinator.data.get("signal")

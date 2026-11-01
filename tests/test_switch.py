@@ -12,7 +12,7 @@ async def test_all_switches_created(hass):
     assert await hass.config_entries.async_setup(entry.entry_id)
     await hass.async_block_till_done()
     switch_states = [s for s in hass.states.async_all() if s.entity_id.startswith("switch.")]
-    assert len(switch_states) == len(SWITCHES) == 14
+    assert len(switch_states) == len(SWITCHES) == 15
 
 
 async def test_scanlines_turn_on_sends_toggle_only_when_off(hass):

@@ -1,4 +1,5 @@
 """Tests for the GBS Control API client."""
+
 import asyncio
 import re
 from unittest.mock import AsyncMock, patch
@@ -256,3 +257,82 @@ async def test_listen_reconnects_and_reports_connection():
     assert frames == [frame]  # frame decoded and forwarded after the reconnect
     assert connections == [True, False]  # connected, then dropped on close
     assert session.connect_calls == 2  # retried after the first failed connect
+
+
+# --- WebSocket text channel ---------------------------------------------------
+from custom_components.gbs_control.api import TextLineAssembler, parse_text_line  # noqa: E402
+
+
+def test_assembler_joins_fragments_into_lines():
+    # The firmware sends one WS frame per print() call: a line arrives in pieces.
+    a = TextLineAssembler()
+    frags = ["preset applied: ", "1280x960", " for ", "NTSC 60Hz ", "\r\n", "no signal\n"]
+    lines = [line for f in frags for line in a.feed(f)]
+    assert lines == ["preset applied: 1280x960 for NTSC 60Hz", "no signal"]
+    # Leading newline / empty lines are dropped.
+    assert list(a.feed("\nFormat change: 1 <stable>\r\n")) == ["Format change: 1 <stable>"]
+
+
+@pytest.mark.parametrize(
+    ("line", "expected"),
+    [
+        (
+            "preset applied: 1280x960 for NTSC 60Hz",
+            {
+                "signal": True,
+                "output_resolution": "1280x960",
+                "custom_preset": False,
+                "input_format": "ntsc_480i",
+            },
+        ),
+        (
+            "preset applied: 1920x1080 (custom) for 720p 60Hz HDTV (set your TV aspect ratio to 16:9!)",
+            {
+                "signal": True,
+                "output_resolution": "1920x1080",
+                "custom_preset": True,
+                "input_format": "hdtv_720p",
+            },
+        ),
+        (
+            "preset applied: bypass (bypass) for RGB Bypass (CSync)",
+            {
+                "signal": True,
+                "output_resolution": "Pass-through",
+                "custom_preset": False,
+                "input_format": "rgbhv_bypass",
+            },
+        ),
+        ("Format change: 2 <stable>", {"signal": True, "input_format": "pal_576i"}),
+        ("Format change: 5 <not stable>", {"signal": False, "input_format": "hdtv_720p"}),
+        ("no signal", {"signal": False, "input_format": "none"}),
+        (", source Hz: 59.941, output Hz: 59.941", {"source_hz": 59.941, "output_hz": 59.941}),
+        (
+            "source Hz: 59.94056 new out: 59.94056 clock: 81000000 (+12)",
+            {"source_hz": 59.94056, "output_hz": 59.94056},
+        ),
+        (
+            "user command O at settings source 2, custom slot 65, status 13",
+            {"preset_id": 0x13, "preset_preference": 2},
+        ),
+        ("(WiFi): STA mode connected; IP: 192.168.31.248", {"ip_address": "192.168.31.248"}),
+        ("frame lock method = 1", {"frame_time_lock_method": 1}),
+        (
+            "Active FrameTime Lock enabled, disable if display unstable or stays blank! Method: 0 (vtotal + VSST)",
+            {"frame_time_lock_method": 0},
+        ),
+        ("preset preference = 3", {"preset_preference": 3}),
+        ("Brightness++ : 3", {"brightness": 3}),
+        ("Contrast-- : 127", {"contrast": 127}),
+        ("Y_OFFSET: 0", {"brightness": 0}),
+        ("Y_GAIN: 128", {"contrast": 128}),
+        ("UCOS_GAIN: 28", {"pb_gain": 28}),
+        ("Pr/V gain++ : 42", {"pr_gain": 42}),
+        ("ADC gain++ : 7a", {"adc_gain": 0x7A}),
+        ("Scanline Brightness: 30", {"scanline_strength": 0x30}),
+        ("h:   0 v:   0 PLL:0 A:7b7b7b", {}),  # print-info stream: ignored
+        ("scanlines: on (Line Filter recommended)", {}),
+    ],
+)
+def test_parse_text_line(line, expected):
+    assert parse_text_line(line) == expected

@@ -90,6 +90,16 @@
           "description": "Het GBS Control-apparaat waarnaar de opdracht wordt gestuurd."
         }
       }
+    },
+    "refresh": {
+      "name": "Vernieuwen",
+      "description": "Laadt de opgeslagen slots opnieuw en laat het apparaat zijn opties en kleurregisters afdrukken.",
+      "fields": {
+        "device_id": {
+          "name": "Apparaat",
+          "description": "Het te vernieuwen GBS Control-apparaat."
+        }
+      }
     }
   },
   "entity": {
@@ -97,23 +107,80 @@
       "output_preset": {
         "name": "Uitvoerpreset",
         "state": {
-          "preset_1": "Preset 1",
-          "preset_2": "Preset 2",
-          "preset_3": "Preset 3",
-          "preset_4": "Preset 4",
-          "preset_5": "Preset 5",
-          "preset_6": "Preset 6",
-          "bypass": "Bypass",
+          "preset_1": "1280x960",
+          "preset_2": "1280x1024",
+          "preset_3": "1280x720",
+          "preset_4": "720x480 / 768x576",
+          "preset_5": "1920x1080",
+          "preset_6": "Downscale",
+          "bypass": "Doorlussen",
           "custom": "Aangepast"
         }
       },
       "active_slot": {
         "name": "Actief slot"
+      },
+      "input_format": {
+        "name": "Ingangsformaat",
+        "state": {
+          "none": "Geen signaal",
+          "ntsc_480i": "NTSC 480i (60Hz)",
+          "pal_576i": "PAL 576i (50Hz)",
+          "edtv_480p": "EDTV 480p (60Hz)",
+          "edtv_576p": "EDTV 576p (50Hz)",
+          "hdtv_720p": "HDTV 720p",
+          "hdtv_1080i": "HDTV 1080i",
+          "hdtv_1080p": "HDTV 1080p",
+          "medium_res": "Gemiddelde resolutie",
+          "vga_graphic": "VGA/SVGA/XGA/SXGA",
+          "rgbhv_scaling": "RGBHV (schalen)",
+          "rgbhv_bypass": "RGBHV (doorlussen)"
+        }
+      },
+      "source_hz": {
+        "name": "Veldfrequentie bron"
+      },
+      "output_hz": {
+        "name": "Beeldfrequentie uitgang"
+      },
+      "frame_time_lock_method": {
+        "name": "Frame-time-lock-methode",
+        "state": {
+          "vtotal_vsst": "0 (vtotal + VSST)",
+          "vtotal_only": "1 (alleen vtotal)"
+        }
+      },
+      "wifi_ssid": {
+        "name": "Wi-Fi-netwerk"
+      },
+      "ip_address": {
+        "name": "IP-adres"
+      },
+      "brightness": {
+        "name": "Helderheid"
+      },
+      "contrast": {
+        "name": "Contrast"
+      },
+      "pb_gain": {
+        "name": "Pb/U-versterking"
+      },
+      "pr_gain": {
+        "name": "Pr/V-versterking"
+      },
+      "adc_gain": {
+        "name": "ADC-versterking"
+      },
+      "scanline_strength": {
+        "name": "Scanline-sterkte"
       }
     },
     "binary_sensor": {
       "connectivity": {
         "name": "Verbinding"
+      },
+      "signal": {
+        "name": "Signaal"
       }
     },
     "select": {
@@ -166,6 +233,9 @@
       },
       "deinterlace": {
         "name": "Bewegingsadaptief deïnterlacen"
+      },
+      "step_response": {
+        "name": "Stapresponsie"
       }
     },
     "button": {
@@ -198,6 +268,141 @@
       },
       "vertical_mask_decrease": {
         "name": "Verticaal masker verlagen"
+      },
+      "list_options": {
+        "name": "Opties afdrukken"
+      },
+      "wifi_reconnect": {
+        "name": "Wi-Fi opnieuw verbinden"
+      },
+      "enable_ota": {
+        "name": "OTA-updates inschakelen"
+      },
+      "brightness_increase": {
+        "name": "Helderheid verhogen"
+      },
+      "brightness_decrease": {
+        "name": "Helderheid verlagen"
+      },
+      "contrast_increase": {
+        "name": "Contrast verhogen"
+      },
+      "contrast_decrease": {
+        "name": "Contrast verlagen"
+      },
+      "pb_gain_increase": {
+        "name": "Pb/U-versterking verhogen"
+      },
+      "pb_gain_decrease": {
+        "name": "Pb/U-versterking verlagen"
+      },
+      "pr_gain_increase": {
+        "name": "Pr/V-versterking verhogen"
+      },
+      "pr_gain_decrease": {
+        "name": "Pr/V-versterking verlagen"
+      },
+      "color_defaults": {
+        "name": "Standaardkleuren herstellen"
+      },
+      "color_info": {
+        "name": "Kleurregisters afdrukken"
+      },
+      "adc_gain_increase": {
+        "name": "ADC-versterking verhogen"
+      },
+      "adc_gain_decrease": {
+        "name": "ADC-versterking verlagen"
+      },
+      "horizontal_mask_increase": {
+        "name": "Horizontaal masker vergroten"
+      },
+      "horizontal_mask_decrease": {
+        "name": "Horizontaal masker verkleinen"
+      },
+      "shift_left": {
+        "name": "Beeld naar links verschuiven"
+      },
+      "shift_right": {
+        "name": "Beeld naar rechts verschuiven"
+      },
+      "shift_up": {
+        "name": "Beeld omhoog verschuiven"
+      },
+      "shift_down": {
+        "name": "Beeld omlaag verschuiven"
+      },
+      "scale_horizontal_increase": {
+        "name": "Horizontaal vergroten"
+      },
+      "scale_horizontal_decrease": {
+        "name": "Horizontaal verkleinen"
+      },
+      "scale_vertical_increase": {
+        "name": "Verticaal vergroten"
+      },
+      "scale_vertical_decrease": {
+        "name": "Verticaal verkleinen"
+      },
+      "memory_left": {
+        "name": "Geheugen naar links verschuiven"
+      },
+      "memory_right": {
+        "name": "Geheugen naar rechts verschuiven"
+      },
+      "hsync_left": {
+        "name": "HSync naar links verschuiven"
+      },
+      "hsync_right": {
+        "name": "HSync naar rechts verschuiven"
+      },
+      "htotal_increase": {
+        "name": "HTotal verhogen"
+      },
+      "htotal_decrease": {
+        "name": "HTotal verlagen"
+      },
+      "resync_htotal": {
+        "name": "HTotal opnieuw synchroniseren"
+      },
+      "snap_frame_rate": {
+        "name": "Vastzetten op 60/50Hz"
+      },
+      "reset_sync_processor": {
+        "name": "Sync-processor resetten"
+      },
+      "reset_chip": {
+        "name": "Chip resetten"
+      },
+      "oversampling": {
+        "name": "Oversampling wisselen"
+      },
+      "invert_sync": {
+        "name": "Sync omkeren"
+      },
+      "pll_divider_increase": {
+        "name": "PLL-deler verhogen"
+      },
+      "sog_level_decrease": {
+        "name": "SOG-niveau verlagen"
+      },
+      "video_timings": {
+        "name": "Video-timings afdrukken"
+      },
+      "freeze_capture": {
+        "name": "Beeld bevriezen omschakelen"
+      },
+      "adc_filter": {
+        "name": "ADC-filter omschakelen"
+      },
+      "if_auto_offset": {
+        "name": "IF auto offset omschakelen"
+      },
+      "debug_view": {
+        "name": "Debugweergave omschakelen"
+      },
+      "sync_watcher": {
+        "name": "Sync watcher omschakelen"
       }
     }
   },

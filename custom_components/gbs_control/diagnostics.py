@@ -1,4 +1,5 @@
 """Diagnostics support for GBS Control."""
+
 from __future__ import annotations
 
 from typing import Any
@@ -17,4 +18,6 @@ async def async_get_config_entry_diagnostics(
         "host": coordinator.host,
         "connected": coordinator.connected,
         "data": dict(coordinator.data),
+        "wifi": dict(coordinator.wifi),
+        "slots": list(coordinator.slots),
     }

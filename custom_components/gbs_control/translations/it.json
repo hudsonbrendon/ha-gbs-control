@@ -90,6 +90,16 @@
           "description": "Il dispositivo GBS Control a cui inviare il comando."
         }
       }
+    },
+    "refresh": {
+      "name": "Aggiorna",
+      "description": "Ricarica gli slot salvati e chiede al dispositivo di stampare opzioni e registri colore.",
+      "fields": {
+        "device_id": {
+          "name": "Dispositivo",
+          "description": "Il dispositivo GBS Control da aggiornare."
+        }
+      }
     }
   },
   "entity": {
@@ -97,23 +107,80 @@
       "output_preset": {
         "name": "Preset di uscita",
         "state": {
-          "preset_1": "Preset 1",
-          "preset_2": "Preset 2",
-          "preset_3": "Preset 3",
-          "preset_4": "Preset 4",
-          "preset_5": "Preset 5",
-          "preset_6": "Preset 6",
-          "bypass": "Bypass",
+          "preset_1": "1280x960",
+          "preset_2": "1280x1024",
+          "preset_3": "1280x720",
+          "preset_4": "720x480 / 768x576",
+          "preset_5": "1920x1080",
+          "preset_6": "Downscale",
+          "bypass": "Passaggio diretto",
           "custom": "Personalizzato"
         }
       },
       "active_slot": {
         "name": "Slot attivo"
+      },
+      "input_format": {
+        "name": "Formato di ingresso",
+        "state": {
+          "none": "Nessun segnale",
+          "ntsc_480i": "NTSC 480i (60Hz)",
+          "pal_576i": "PAL 576i (50Hz)",
+          "edtv_480p": "EDTV 480p (60Hz)",
+          "edtv_576p": "EDTV 576p (50Hz)",
+          "hdtv_720p": "HDTV 720p",
+          "hdtv_1080i": "HDTV 1080i",
+          "hdtv_1080p": "HDTV 1080p",
+          "medium_res": "Risoluzione media",
+          "vga_graphic": "VGA/SVGA/XGA/SXGA",
+          "rgbhv_scaling": "RGBHV (scaling)",
+          "rgbhv_bypass": "RGBHV (passaggio diretto)"
+        }
+      },
+      "source_hz": {
+        "name": "Frequenza di campo della sorgente"
+      },
+      "output_hz": {
+        "name": "Frequenza fotogrammi in uscita"
+      },
+      "frame_time_lock_method": {
+        "name": "Metodo frame-time-lock",
+        "state": {
+          "vtotal_vsst": "0 (vtotal + VSST)",
+          "vtotal_only": "1 (solo vtotal)"
+        }
+      },
+      "wifi_ssid": {
+        "name": "Rete Wi-Fi"
+      },
+      "ip_address": {
+        "name": "Indirizzo IP"
+      },
+      "brightness": {
+        "name": "Luminosità"
+      },
+      "contrast": {
+        "name": "Contrasto"
+      },
+      "pb_gain": {
+        "name": "Guadagno Pb/U"
+      },
+      "pr_gain": {
+        "name": "Guadagno Pr/V"
+      },
+      "adc_gain": {
+        "name": "Guadagno ADC"
+      },
+      "scanline_strength": {
+        "name": "Intensità scanline"
       }
     },
     "binary_sensor": {
       "connectivity": {
         "name": "Connettività"
+      },
+      "signal": {
+        "name": "Segnale"
       }
     },
     "select": {
@@ -166,6 +233,9 @@
       },
       "deinterlace": {
         "name": "Deinterlacciamento adattivo al movimento"
+      },
+      "step_response": {
+        "name": "Risposta al gradino"
       }
     },
     "button": {
@@ -198,6 +268,141 @@
       },
       "vertical_mask_decrease": {
         "name": "Diminuisci maschera verticale"
+      },
+      "list_options": {
+        "name": "Stampa opzioni"
+      },
+      "wifi_reconnect": {
+        "name": "Riconnetti Wi-Fi"
+      },
+      "enable_ota": {
+        "name": "Abilita aggiornamenti OTA"
+      },
+      "brightness_increase": {
+        "name": "Aumenta luminosità"
+      },
+      "brightness_decrease": {
+        "name": "Riduci luminosità"
+      },
+      "contrast_increase": {
+        "name": "Aumenta contrasto"
+      },
+      "contrast_decrease": {
+        "name": "Riduci contrasto"
+      },
+      "pb_gain_increase": {
+        "name": "Aumenta guadagno Pb/U"
+      },
+      "pb_gain_decrease": {
+        "name": "Riduci guadagno Pb/U"
+      },
+      "pr_gain_increase": {
+        "name": "Aumenta guadagno Pr/V"
+      },
+      "pr_gain_decrease": {
+        "name": "Riduci guadagno Pr/V"
+      },
+      "color_defaults": {
+        "name": "Ripristina colori predefiniti"
+      },
+      "color_info": {
+        "name": "Stampa registri colore"
+      },
+      "adc_gain_increase": {
+        "name": "Aumenta guadagno ADC"
+      },
+      "adc_gain_decrease": {
+        "name": "Riduci guadagno ADC"
+      },
+      "horizontal_mask_increase": {
+        "name": "Aumenta maschera orizzontale"
+      },
+      "horizontal_mask_decrease": {
+        "name": "Riduci maschera orizzontale"
+      },
+      "shift_left": {
+        "name": "Sposta immagine a sinistra"
+      },
+      "shift_right": {
+        "name": "Sposta immagine a destra"
+      },
+      "shift_up": {
+        "name": "Sposta immagine in alto"
+      },
+      "shift_down": {
+        "name": "Sposta immagine in basso"
+      },
+      "scale_horizontal_increase": {
+        "name": "Aumenta scala orizzontale"
+      },
+      "scale_horizontal_decrease": {
+        "name": "Riduci scala orizzontale"
+      },
+      "scale_vertical_increase": {
+        "name": "Aumenta scala verticale"
+      },
+      "scale_vertical_decrease": {
+        "name": "Riduci scala verticale"
+      },
+      "memory_left": {
+        "name": "Sposta memoria a sinistra"
+      },
+      "memory_right": {
+        "name": "Sposta memoria a destra"
+      },
+      "hsync_left": {
+        "name": "Sposta HSync a sinistra"
+      },
+      "hsync_right": {
+        "name": "Sposta HSync a destra"
+      },
+      "htotal_increase": {
+        "name": "Aumenta HTotal"
+      },
+      "htotal_decrease": {
+        "name": "Riduci HTotal"
+      },
+      "resync_htotal": {
+        "name": "Risincronizza HTotal"
+      },
+      "snap_frame_rate": {
+        "name": "Aggancia a 60/50Hz"
+      },
+      "reset_sync_processor": {
+        "name": "Reimposta processore di sync"
+      },
+      "reset_chip": {
+        "name": "Reimposta chip"
+      },
+      "oversampling": {
+        "name": "Cambia oversampling"
+      },
+      "invert_sync": {
+        "name": "Inverti sync"
+      },
+      "pll_divider_increase": {
+        "name": "Aumenta divisore PLL"
+      },
+      "sog_level_decrease": {
+        "name": "Riduci livello SOG"
+      },
+      "video_timings": {
+        "name": "Stampa timing video"
+      },
+      "freeze_capture": {
+        "name": "Attiva/disattiva blocco cattura"
+      },
+      "adc_filter": {
+        "name": "Attiva/disattiva filtro ADC"
+      },
+      "if_auto_offset": {
+        "name": "Attiva/disattiva IF auto offset"
+      },
+      "debug_view": {
+        "name": "Attiva/disattiva vista debug"
+      },
+      "sync_watcher": {
+        "name": "Attiva/disattiva sync watcher"
       }
     }
   },
