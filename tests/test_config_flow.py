@@ -3,7 +3,7 @@ from ipaddress import ip_address
 from unittest.mock import patch
 
 from homeassistant import config_entries, data_entry_flow
-from homeassistant.components.zeroconf import ZeroconfServiceInfo
+from homeassistant.helpers.service_info.zeroconf import ZeroconfServiceInfo
 from pytest_homeassistant_custom_component.common import MockConfigEntry
 
 from custom_components.gbs_control.const import DOMAIN
@@ -11,6 +11,7 @@ from custom_components.gbs_control.const import DOMAIN
 CHECK_CONNECTION = (
     "custom_components.gbs_control.config_flow.GBSControlApiClient.async_check_connection"
 )
+SETUP_ENTRY = "custom_components.gbs_control.async_setup_entry"
 
 
 def _discovery() -> ZeroconfServiceInfo:
@@ -31,9 +32,9 @@ async def test_user_flow_success(hass):
     )
     assert result["type"] == data_entry_flow.FlowResultType.FORM
 
-    with patch(
-        "custom_components.gbs_control.config_flow.GBSControlApiClient.async_check_connection",
-        return_value=True,
+    with (
+        patch(CHECK_CONNECTION, return_value=True),
+        patch(SETUP_ENTRY, return_value=True),
     ):
         result2 = await hass.config_entries.flow.async_configure(
             result["flow_id"], {"host": "gbscontrol.local"}
@@ -65,7 +66,10 @@ async def test_zeroconf_discovery_flow(hass):
     assert result["type"] == data_entry_flow.FlowResultType.FORM
     assert result["step_id"] == "zeroconf_confirm"
 
-    with patch(CHECK_CONNECTION, return_value=True):
+    with (
+        patch(CHECK_CONNECTION, return_value=True),
+        patch(SETUP_ENTRY, return_value=True),
+    ):
         result2 = await hass.config_entries.flow.async_configure(result["flow_id"], {})
     assert result2["type"] == data_entry_flow.FlowResultType.CREATE_ENTRY
     # unique id is the stable mDNS hostname; host is the discovered IP
@@ -83,7 +87,10 @@ async def test_reconfigure_updates_host(hass):
     assert result["type"] == data_entry_flow.FlowResultType.FORM
     assert result["step_id"] == "reconfigure"
 
-    with patch(CHECK_CONNECTION, return_value=True):
+    with (
+        patch(CHECK_CONNECTION, return_value=True),
+        patch(SETUP_ENTRY, return_value=True),
+    ):
         result2 = await hass.config_entries.flow.async_configure(
             result["flow_id"], {"host": "192.168.31.251"}
         )

@@ -11,7 +11,7 @@ from .api import GBSControlApiClient
 from .const import DEFAULT_HOST, DOMAIN
 
 if TYPE_CHECKING:
-    from homeassistant.components.zeroconf import ZeroconfServiceInfo
+    from homeassistant.helpers.service_info.zeroconf import ZeroconfServiceInfo
 
 
 class GBSControlConfigFlow(ConfigFlow, domain=DOMAIN):

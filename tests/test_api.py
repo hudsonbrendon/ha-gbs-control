@@ -4,7 +4,6 @@ import re
 from unittest.mock import AsyncMock, patch
 
 import aiohttp
-from aioresponses import aioresponses
 from homeassistant.helpers.aiohttp_client import async_get_clientsession
 import pytest
 
@@ -150,32 +149,29 @@ def test_parse_slots_reads_names_and_chars():
     assert slots[2]["name"] == "Empty"
 
 
-async def test_send_command_raises_on_error_status(hass):
+async def test_send_command_raises_on_error_status(hass, aioclient_mock):
     # A non-2xx device response must propagate (send_command calls raise_for_status).
     session = async_get_clientsession(hass)
     client = GBSControlApiClient("gbscontrol.local", session)
-    with aioresponses() as mocked:
-        mocked.get(re.compile(r"http://gbscontrol\.local/uc.*"), status=500)
-        with pytest.raises(aiohttp.ClientResponseError):
-            await client.send_command("/uc", "7")
+    aioclient_mock.get(re.compile(r"http://gbscontrol\.local/uc.*"), status=500)
+    with pytest.raises(aiohttp.ClientResponseError):
+        await client.send_command("/uc", "7")
 
 
-async def test_async_check_connection_true(hass):
+async def test_async_check_connection_true(hass, aioclient_mock):
     session = async_get_clientsession(hass)
     client = GBSControlApiClient("gbscontrol.local", session)
-    with aioresponses() as mocked:
-        mocked.get("http://gbscontrol.local/", status=200, body=b"gzip-bytes")
-        assert await client.async_check_connection() is True
+    aioclient_mock.get("http://gbscontrol.local/", status=200, content=b"gzip-bytes")
+    assert await client.async_check_connection() is True
 
 
-async def test_async_check_connection_false_on_error(hass):
+async def test_async_check_connection_false_on_error(hass, aioclient_mock):
     from aiohttp import ClientError
 
     session = async_get_clientsession(hass)
     client = GBSControlApiClient("gbscontrol.local", session)
-    with aioresponses() as mocked:
-        mocked.get("http://gbscontrol.local/", exception=ClientError())
-        assert await client.async_check_connection() is False
+    aioclient_mock.get("http://gbscontrol.local/", exc=ClientError())
+    assert await client.async_check_connection() is False
 
 
 # --- listen() reconnect-loop coverage ---------------------------------------
