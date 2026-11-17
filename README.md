@@ -1,11 +1,17 @@
-<img src="custom_components/gbs_control/brand/icon.png" width="96" align="right" alt="GBS Control logo">
+<p align="center">
+  <img src="custom_components/gbs_control/brand/icon@2x.png" alt="GBS Control" height="128">
+</p>
 
 # GBS Control — Home Assistant integration
 
-[![HACS Custom](https://img.shields.io/badge/HACS-Custom-41BDF5.svg)](https://github.com/hacs/integration)
-[![Test](https://github.com/hudsonbrendon/ha-gbs-control/actions/workflows/test.yml/badge.svg)](https://github.com/hudsonbrendon/ha-gbs-control/actions/workflows/test.yml)
-[![Lint](https://github.com/hudsonbrendon/ha-gbs-control/actions/workflows/lint.yml/badge.svg)](https://github.com/hudsonbrendon/ha-gbs-control/actions/workflows/lint.yml)
-[![Validate](https://github.com/hudsonbrendon/ha-gbs-control/actions/workflows/validate.yml/badge.svg)](https://github.com/hudsonbrendon/ha-gbs-control/actions/workflows/validate.yml)
+[![Tests](https://github.com/hudsonbrendon/ha-gbs-control/actions/workflows/tests.yml/badge.svg)](https://github.com/hudsonbrendon/ha-gbs-control/actions/workflows/tests.yml)
+[![Hassfest](https://github.com/hudsonbrendon/ha-gbs-control/actions/workflows/hassfest.yml/badge.svg)](https://github.com/hudsonbrendon/ha-gbs-control/actions/workflows/hassfest.yml)
+[![HACS](https://github.com/hudsonbrendon/ha-gbs-control/actions/workflows/validate.yml/badge.svg)](https://github.com/hudsonbrendon/ha-gbs-control/actions/workflows/validate.yml)
+[![Release](https://img.shields.io/github/v/release/hudsonbrendon/ha-gbs-control?sort=semver)](https://github.com/hudsonbrendon/ha-gbs-control/releases)
+[![Downloads](https://img.shields.io/github/downloads/hudsonbrendon/ha-gbs-control/total)](https://github.com/hudsonbrendon/ha-gbs-control/releases)
+[![HACS Default](https://img.shields.io/badge/HACS-Default-41BDF5.svg)](https://hacs.xyz/)
+[![Home Assistant](https://img.shields.io/badge/Home%20Assistant-2024.12.0%2B-18BCF2?logo=homeassistant&logoColor=white)](https://www.home-assistant.io/)
+[![License](https://img.shields.io/github/license/hudsonbrendon/ha-gbs-control)](LICENSE)
 
 Control and monitor a [GBS Control](https://github.com/ramapcsx2/gbs-control) video
 upscaler (GBS-8200 / GBS-8220 running the ESP firmware) from Home Assistant.

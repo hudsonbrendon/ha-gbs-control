@@ -1,0 +1,32 @@
+name: Release
+
+on:
+  push:
+    branches: [main, master]
+    paths:
+      - custom_components/gbs_control/manifest.json
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Read manifest version
+        id: version
+        run: echo "version=$(jq -r .version custom_components/gbs_control/manifest.json)" >> "$GITHUB_OUTPUT"
+      - name: Zip integration
+        run: cd custom_components/gbs_control && zip -r "$GITHUB_WORKSPACE/gbs_control.zip" . -x '__pycache__/*'
+      - name: Create release when the version is new
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          TAG="v${{ steps.version.outputs.version }}"
+          if gh release view "$TAG" >/dev/null 2>&1; then
+            echo "$TAG already released"
+          else
+            gh release create "$TAG" "gbs_control.zip" --title "$TAG" --generate-notes
+          fi
